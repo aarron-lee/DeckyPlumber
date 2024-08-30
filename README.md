@@ -6,7 +6,6 @@ Proof of Concept Decky Plugin for changing InputPlumber controller mode
 
 Works only on devices with InputPlumber running
 
-<!--
 # Install
 
 ### Prerequisites
@@ -34,7 +33,7 @@ then run:
 sudo systemctl restart plugin_loader.service
 ```
 
-then reboot your machine. -->
+then reboot your machine.
 
 ## Manual build
 
