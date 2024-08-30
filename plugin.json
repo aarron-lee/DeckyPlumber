@@ -1,0 +1,10 @@
+{
+  "name": "DeckyPlumber",
+  "author": "Aarron Lee",
+  "flags": ["root"],
+  "publish": {
+    "tags": ["root"],
+    "description": "plugin for setting controller types for InputPlumber",
+    "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
+  }
+}
