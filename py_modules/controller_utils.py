@@ -1,8 +1,9 @@
 import decky_plugin
-# import time
+import time
 import subprocess
 import file_timeout
 import plugin_settings as settings
+import plugin_enums
 
 # sync the state of the controller to the values in settings.json
 def sync_controller_settings(current_game_id):
@@ -25,5 +26,9 @@ def set_controller_mode(mode):
 
 
 def execute_mode_change(mode):
-  cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" 1 "{mode}"'
-  subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if mode == plugin_enums.ControllerModes.DEFAULT.value:
+        # handle for default
+        decky_plugin.logger.info(f'handle for setting default mode')
+    else:
+        cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" 1 "{mode}"'
+        subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -25,7 +25,7 @@ def set_setting(name: str, value):
     return setting_file.setSetting(name, value)
 
 DEFAULT_CONTROLLER_VALUES = {
-  "mode": "xb360"
+  "mode": "default"
 }
 
 def bootstrap_controller_settings(profileName: str):

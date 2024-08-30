@@ -5,6 +5,7 @@
 // Xbox Elite: xbox-elite
 
 export enum ControllerModes {
+  DEFAULT = "default",
   XBOX = "xb360",
   DUALSENSE_EDGE = "ds5-edge",
   STEAM_DECK = "deck",

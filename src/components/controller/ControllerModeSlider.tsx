@@ -5,13 +5,15 @@ import { capitalize } from "lodash";
 import { ControllerModes } from "../../backend/constants";
 
 enum Mode {
-  XBOX = 0,
-  DUALSENSE_EDGE = 1,
-  STEAM_DECK = 2,
-  XBOX_ELITE = 3,
+  DEFAULT = 0,
+  XBOX = 1,
+  DUALSENSE_EDGE = 2,
+  STEAM_DECK = 3,
+  XBOX_ELITE = 4,
 }
 
 const ModeToKey = {
+  default: "DEFAULT",
   xb360: "XBOX",
   "ds5-edge": "DUALSENSE_EDGE",
   deck: "STEAM_DECK",
@@ -23,6 +25,7 @@ const ControllerModeSlider: FC = () => {
 
   const handleSliderChange = (value: number) => {
     const key = Mode[value] as
+      | "DEFAULT"
       | "XBOX"
       | "DUALSENSE_EDGE"
       | "STEAM_DECK"

@@ -12,7 +12,7 @@ type ControllerProfile = {
 };
 
 const DEFAULT_CONTROLLER_PROFILE = {
-  mode: "xb360",
+  mode: "default",
 };
 
 type ControllerProfiles = {
