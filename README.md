@@ -2,6 +2,8 @@
 
 Proof of Concept Decky Plugin for changing InputPlumber controller mode
 
+![plugin image](./img/decky_plumber.png)
+
 # Prerequisites
 
 Works only on devices with InputPlumber running
