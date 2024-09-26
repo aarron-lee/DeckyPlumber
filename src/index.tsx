@@ -1,6 +1,5 @@
 import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
 import { memo, VFC } from "react";
-
 import ControllerPanel from "./components/controller/ControllerPanel";
 import { createServerApiHelpers, saveServerApi } from "./backend/utils";
 import { store } from "./redux-modules/store";
@@ -11,6 +10,7 @@ import { currentGameIdListener } from "./backend/currentGameIdListener";
 import logo from "../assets/Icon.png";
 import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
+import { suspendResumeListeners } from "./redux-modules/steamListeners";
 
 const Content: VFC<{ serverAPI?: ServerAPI }> = memo(() => {
   const loading = useSelector(getInitialLoading);
@@ -52,6 +52,8 @@ export default definePlugin((serverApi: ServerAPI) => {
 
   const clearListener = currentGameIdListener();
 
+  const unsubscribeSuspendListeners = suspendResumeListeners();
+
   return {
     title: <div className={staticClasses.Title}>DeckyPlumber</div>,
     content: <AppContainer serverAPI={serverApi} />,
@@ -67,6 +69,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     ),
     onDismount() {
       clearListener();
+      unsubscribeSuspendListeners();
     },
   };
 });

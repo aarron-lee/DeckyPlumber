@@ -3,6 +3,8 @@ import { ServerAPI, Router } from "decky-frontend-lib";
 export enum ServerAPIMethods {
   LOG_INFO = "log_info",
   GET_SETTINGS = "get_settings",
+  ON_SUSPEND = "on_suspend",
+  ON_RESUME = "on_resume",
 }
 
 const createLogInfo = (serverAPI: ServerAPI) => async (info: any) => {
