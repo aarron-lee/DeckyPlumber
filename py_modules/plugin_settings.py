@@ -65,3 +65,10 @@ def set_all_controller_profiles(controller_profiles):
             profileName=profileName,
             values=controllerProfile
         )
+
+def get_controller_mode_for_game_id(game_id):
+    s = get_settings()
+    controller_profile = s.get('controllerProfiles', {}).get(game_id)
+    mode = controller_profile.get('mode',  None)
+
+    return mode

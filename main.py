@@ -6,7 +6,7 @@ import device
 import file_timeout
 import plugin_update
 import plugin_settings
-
+from plugin_enums import ControllerModes
 class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):
@@ -35,6 +35,24 @@ class Plugin:
         if currentGameId:
             controller_utils.sync_controller_settings(currentGameId)
         return result
+
+    async def on_suspend(self, currentGameId):
+        mode = plugin_settings.get_controller_mode_for_game_id(currentGameId)
+
+        if mode and mode == ControllerModes.STEAM_DECK.value:
+            # Steam Deck Controller breaks on suspend, so temporarily set to default instead
+            controller_utils.set_controller_mode(
+                ControllerModes.DEFAULT.value
+            )
+
+    async def on_resume(self, currentGameId):
+        mode = plugin_settings.get_controller_mode_for_game_id(currentGameId)
+
+        if mode and mode == ControllerModes.STEAM_DECK.value:
+             # if deck on_resume, enable STEAM_DECK
+            controller_utils.set_controller_mode(
+                ControllerModes.STEAM_DECK.value
+            )
 
     # sync state in settings.json to actual controller hardware
     async def sync_controller_settings(self, currentGameId):
