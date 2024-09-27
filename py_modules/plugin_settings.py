@@ -42,14 +42,9 @@ def bootstrap_controller_settings(profileName: str):
     if not controller_profile:
         controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
 
-def get_per_game_profiles_enabled():
-    s = get_settings()
-    perGameProfilesEnabled = s.get('perGameProfilesEnabled', False)
-    return perGameProfilesEnabled
-
 def get_controller_profile_for_game_id(game_id):
     s = get_settings()
-    per_game_profiles_enabled = get_per_game_profiles_enabled()
+    per_game_profiles_enabled = s.get('perGameProfilesEnabled', False)
 
     controller_profile = s.get('controllerProfiles', {}).get(game_id if per_game_profiles_enabled else 'default')
 
