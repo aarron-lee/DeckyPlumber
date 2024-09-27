@@ -10,9 +10,7 @@ STATE_FILE = "/tmp/.deckyplumber.state"
 
 # sync the state of the controller to the values in settings.json
 def sync_controller_settings(current_game_id):
-    s = settings.get_settings()
-
-    controller_profile = s.get('controllerProfiles').get(current_game_id)
+    controller_profile = settings.get_controller_profile_for_game_id(current_game_id)
 
     mode = controller_profile.get('mode')
 

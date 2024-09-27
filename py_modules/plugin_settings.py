@@ -42,6 +42,25 @@ def bootstrap_controller_settings(profileName: str):
     if not controller_profile:
         controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
 
+def get_per_game_profiles_enabled():
+    s = get_settings()
+    perGameProfilesEnabled = s.get('perGameProfilesEnabled', False)
+    return perGameProfilesEnabled
+
+def get_controller_profile_for_game_id(game_id):
+    s = get_settings()
+    per_game_profiles_enabled = get_per_game_profiles_enabled()
+
+    controller_profile = s.get('controllerProfiles', {}).get(game_id if per_game_profiles_enabled else 'default')
+
+    return controller_profile
+
+def get_controller_mode_for_game_id(game_id):
+    controller_profile = get_controller_profile_for_game_id(game_id)
+    mode = controller_profile.get('mode',  None)
+
+    return mode
+
 def set_controller_profile_value(profileName: str, key: str, value):
     bootstrap_controller_settings(profileName)
 
@@ -65,10 +84,3 @@ def set_all_controller_profiles(controller_profiles):
             profileName=profileName,
             values=controllerProfile
         )
-
-def get_controller_mode_for_game_id(game_id):
-    s = get_settings()
-    controller_profile = s.get('controllerProfiles', {}).get(game_id)
-    mode = controller_profile.get('mode',  None)
-
-    return mode
