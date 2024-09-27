@@ -1,6 +1,6 @@
 {
   "name": "decky-plumber",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "InputPlumber Decky Plugin",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c",
