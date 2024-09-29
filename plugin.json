@@ -2,6 +2,7 @@
   "name": "DeckyPlumber",
   "author": "Aarron Lee",
   "flags": ["root"],
+  "api_version": 1,
   "publish": {
     "tags": ["root"],
     "description": "plugin for setting controller types for InputPlumber",
