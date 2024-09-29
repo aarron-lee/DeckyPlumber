@@ -1,4 +1,4 @@
-import { definePlugin, ServerAPI, staticClasses } from "decky-frontend-lib";
+import { definePlugin, ServerAPI, staticClasses } from "@decky/ui";
 import { memo, VFC } from "react";
 import ControllerPanel from "./components/controller/ControllerPanel";
 import { createServerApiHelpers, saveServerApi } from "./backend/utils";

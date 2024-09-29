@@ -52,7 +52,7 @@ cd DeckyPlumber
 npm install -g pnpm
 
 pnpm install
-pnpm update decky-frontend-lib --latest
+pnpm update @decky/ui --latest
 pnpm run build
 ```
 

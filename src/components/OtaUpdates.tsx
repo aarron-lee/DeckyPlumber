@@ -5,12 +5,7 @@ import {
   getDeviceNameSelector,
   getPluginVersionNumSelector,
 } from "../redux-modules/uiSlice";
-import {
-  ButtonItem,
-  Field,
-  PanelSection,
-  PanelSectionRow,
-} from "decky-frontend-lib";
+import { ButtonItem, Field, PanelSection, PanelSectionRow } from "@decky/ui";
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");

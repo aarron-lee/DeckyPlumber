@@ -1,4 +1,4 @@
-import { ServerAPI, Router } from "decky-frontend-lib";
+import { ServerAPI, Router } from "@decky/ui";
 
 export enum ServerAPIMethods {
   LOG_INFO = "log_info",

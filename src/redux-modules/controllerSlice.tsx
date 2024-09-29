@@ -4,7 +4,7 @@ import { get, merge } from "lodash";
 import type { RootState } from "./store";
 import { setCurrentGameId, setInitialState } from "./extraActions";
 import { extractCurrentGameId } from "../backend/utils";
-import { Router } from "decky-frontend-lib";
+import { Router } from "@decky/ui";
 import { ControllerModes } from "../backend/constants";
 
 type ControllerProfile = {
