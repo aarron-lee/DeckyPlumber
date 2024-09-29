@@ -40,11 +40,9 @@ const AppContainer: FC = () => {
 export default definePlugin(() => {
   getSettings().then((result) => {
     // logInfo(result);
-    if (result.success) {
-      const results = result.result || {};
+    const results = result || {};
 
-      store.dispatch(setInitialState(results));
-    }
+    store.dispatch(setInitialState(results));
   });
 
   const clearListener = currentGameIdListener();
