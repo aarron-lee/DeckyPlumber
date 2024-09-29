@@ -1,7 +1,7 @@
 import { definePlugin, staticClasses } from "@decky/ui";
 import { FC, memo } from "react";
 import ControllerPanel from "./components/controller/ControllerPanel";
-import { getSettings } from "./backend/utils";
+import { getSettings, logInfo } from "./backend/utils";
 import { store } from "./redux-modules/store";
 import { getInitialLoading } from "./redux-modules/uiSlice";
 import { setInitialState } from "./redux-modules/extraActions";
@@ -39,8 +39,8 @@ const AppContainer: FC = () => {
 
 export default definePlugin(() => {
   getSettings().then((result) => {
-    // logInfo(result);
     const results = result || {};
+    logInfo(result);
 
     store.dispatch(setInitialState(results));
   });
