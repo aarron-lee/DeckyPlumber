@@ -2,6 +2,7 @@
   "name": "decky-plumber",
   "version": "0.0.2",
   "description": "InputPlumber Decky Plugin",
+  "type": "module",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
