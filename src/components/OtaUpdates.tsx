@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
-import { getLatestVersionNum, getServerApi, otaUpdate } from "../backend/utils";
+import { getLatestVersionNum, otaUpdate } from "../backend/utils";
 import { useSelector } from "react-redux";
 import {
   getDeviceNameSelector,
   getPluginVersionNumSelector,
 } from "../redux-modules/uiSlice";
-import {
-  ButtonItem,
-  Field,
-  PanelSection,
-  PanelSectionRow,
-} from "decky-frontend-lib";
+import { ButtonItem, Field, PanelSection, PanelSectionRow } from "@decky/ui";
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");
@@ -19,13 +14,9 @@ const OtaUpdates = () => {
 
   useEffect(() => {
     const fn = async () => {
-      const serverApi = getServerApi();
+      const fetchedVersionNum = await getLatestVersionNum();
 
-      if (serverApi) {
-        const fetchedVersionNum = await getLatestVersionNum(serverApi);
-
-        setLatestVersionNum(fetchedVersionNum);
-      }
+      setLatestVersionNum(fetchedVersionNum);
     };
 
     fn();
@@ -57,8 +48,7 @@ const OtaUpdates = () => {
         <PanelSectionRow>
           <ButtonItem
             onClick={() => {
-              const serverApi = getServerApi();
-              if (serverApi) otaUpdate(serverApi);
+              otaUpdate();
             }}
             layout={"below"}
           >

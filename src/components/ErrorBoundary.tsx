@@ -1,6 +1,6 @@
 //@ts-nocheck
-import { Field } from 'decky-frontend-lib';
-import { Component } from 'react';
+import { Field } from "@decky/ui";
+import { Component } from "react";
 
 type PropsType = {
   children: any;

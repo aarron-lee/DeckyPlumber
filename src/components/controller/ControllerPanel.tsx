@@ -1,4 +1,4 @@
-import { PanelSection } from "decky-frontend-lib";
+import { PanelSection } from "@decky/ui";
 import { VFC } from "react";
 import { useProfileDisplayName } from "../../hooks/controller";
 import { PerGameProfilesToggle } from "./PerGameProfilesToggle";

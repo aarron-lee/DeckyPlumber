@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { SliderField, NotchLabel } from "decky-frontend-lib";
+import { SliderField, NotchLabel } from "@decky/ui";
 import { useControllerMode } from "../../hooks/controller";
 import { capitalize } from "lodash";
 import { ControllerModes } from "../../backend/constants";
