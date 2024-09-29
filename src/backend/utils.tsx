@@ -12,6 +12,20 @@ export enum ServerAPIMethods {
   OTA_UPDATE = "ota_update",
 }
 
+export const onSuspend = (currentGameId: string) => {
+  return call<[currentGameId: string], void>(
+    ServerAPIMethods.ON_SUSPEND,
+    currentGameId
+  );
+};
+
+export const onResume = (currentGameId: string) => {
+  return call<[currentGameId: string], void>(
+    ServerAPIMethods.ON_RESUME,
+    currentGameId
+  );
+};
+
 export const logInfo = (info: any) => {
   call<[info: any], void>(ServerAPIMethods.LOG_INFO, info);
 };

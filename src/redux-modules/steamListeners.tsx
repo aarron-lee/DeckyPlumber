@@ -1,10 +1,10 @@
-import { extractCurrentGameId, ServerAPIMethods } from "../backend/utils";
+import { extractCurrentGameId, onResume, onSuspend } from "../backend/utils";
 
 function suspendListener() {
   const unregister = SteamClient.System.RegisterForOnSuspendRequest(() => {
     const currentGameId = extractCurrentGameId();
 
-    serverApi?.callPluginMethod(ServerAPIMethods.ON_SUSPEND, { currentGameId });
+    onSuspend(currentGameId);
   });
   return unregister;
 }
@@ -13,7 +13,7 @@ function resumeListener() {
   const unregister = SteamClient.System.RegisterForOnResumeFromSuspend(() => {
     const currentGameId = extractCurrentGameId();
 
-    serverApi?.callPluginMethod(ServerAPIMethods.ON_RESUME, { currentGameId });
+    onResume(currentGameId);
   });
   return unregister;
 }
