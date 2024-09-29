@@ -1,5 +1,4 @@
 import os
-import logging
 import decky_plugin
 import controller_utils
 import device
@@ -64,7 +63,7 @@ class Plugin:
             with file_timeout.time_limit(15):
                 plugin_update.ota_update()
         except Exception as e:
-            logging.error(e)
+            decky_plugin.logger.error(e)
 
     async def get_latest_version_num(self):
         return plugin_update.get_latest_version()
@@ -79,4 +78,4 @@ class Plugin:
         decky_plugin.logger.info("Migrations")
 
     async def log_info(self, info):
-        logging.info(info)
+        decky_plugin.logger.info(info)
