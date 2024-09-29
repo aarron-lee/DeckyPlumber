@@ -40,7 +40,6 @@ const AppContainer: FC = () => {
 export default definePlugin(() => {
   getSettings().then((result) => {
     const results = result || {};
-    logInfo(result);
 
     store.dispatch(setInitialState(results));
   });
