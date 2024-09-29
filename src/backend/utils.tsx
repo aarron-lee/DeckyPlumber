@@ -1,30 +1,42 @@
-import { ServerAPI, Router } from "@decky/ui";
+import { Router } from "@decky/ui";
+import { callable, call } from "@decky/api";
 
 export enum ServerAPIMethods {
   LOG_INFO = "log_info",
   GET_SETTINGS = "get_settings",
   ON_SUSPEND = "on_suspend",
   ON_RESUME = "on_resume",
+  SAVE_CONTROLLER_SETTINGS = "save_controller_settings",
+  SYNC_CONTROLLER_SETTINGS = "sync_controller_settings",
+  SAVE_PER_GAME_PROFILES_ENABLED = "save_per_game_profiles_enabled",
+  OTA_UPDATE = "ota_update",
 }
 
-const createLogInfo = (serverAPI: ServerAPI) => async (info: any) => {
-  await serverAPI.callPluginMethod(ServerAPIMethods.LOG_INFO, {
-    info: JSON.stringify(info),
-  });
+export const logInfo = (info: any) => {
+  call<[info: any], void>(ServerAPIMethods.LOG_INFO, info);
 };
 
-const createGetSettings = (serverAPI: ServerAPI) => async () => {
-  return await serverAPI.callPluginMethod(ServerAPIMethods.GET_SETTINGS, {});
+export const getSettings = callable<[], any>(ServerAPIMethods.GET_SETTINGS);
+
+export const syncControllerSettings = (currentGameId: string) => {
+  return call<[currentGameId: string], void>(
+    ServerAPIMethods.SYNC_CONTROLLER_SETTINGS,
+    currentGameId
+  );
 };
 
-let serverApi: undefined | ServerAPI;
-
-export const saveServerApi = (s: ServerAPI) => {
-  serverApi = s;
+export const saveControllerSettings = (payload: any) => {
+  return call<[payload: any], void>(
+    ServerAPIMethods.SAVE_CONTROLLER_SETTINGS,
+    payload
+  );
 };
 
-export const getServerApi = () => {
-  return serverApi;
+export const savePerGameProfilesEnabled = (enabled: boolean) => {
+  return call<[enabled: boolean], void>(
+    ServerAPIMethods.SAVE_PER_GAME_PROFILES_ENABLED,
+    enabled
+  );
 };
 
 export const extractDisplayName = () =>
@@ -32,21 +44,6 @@ export const extractDisplayName = () =>
 
 export const extractCurrentGameId = () =>
   `${Router.MainRunningApp?.appid || "default"}`;
-
-export const createServerApiHelpers = (serverAPI: ServerAPI) => {
-  return {
-    logInfo: createLogInfo(serverAPI),
-    getSettings: createGetSettings(serverAPI),
-  };
-};
-
-export const logInfo = (info: any) => {
-  const s = getServerApi();
-  s &&
-    s.callPluginMethod(ServerAPIMethods.LOG_INFO, {
-      info: JSON.stringify(info),
-    });
-};
 
 export const getLatestVersionNum = async (serverApi: ServerAPI) => {
   const { result } = await serverApi.fetchNoCors(
@@ -62,6 +59,4 @@ export const getLatestVersionNum = async (serverApi: ServerAPI) => {
   return "";
 };
 
-export const otaUpdate = async (serverApi: ServerAPI) => {
-  return serverApi.callPluginMethod("ota_update", {});
-};
+export const otaUpdate = callable<[], any>(ServerAPIMethods.OTA_UPDATE);

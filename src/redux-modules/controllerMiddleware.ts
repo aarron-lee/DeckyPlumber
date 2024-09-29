@@ -1,6 +1,10 @@
 import { debounce } from "lodash";
 import { setCurrentGameId, setInitialState } from "./extraActions";
-import { extractCurrentGameId, getServerApi } from "../backend/utils";
+import {
+  extractCurrentGameId,
+  savePerGameProfilesEnabled,
+  syncControllerSettings,
+} from "../backend/utils";
 import { controllerSlice } from "./controllerSlice";
 
 // -------------
@@ -16,8 +20,6 @@ const mutatingActionTypes = [
 
 // persist controller settings to the backend
 const saveControllerSettings = (store: any) => {
-  const serverApi = getServerApi();
-
   const {
     controller: { controllerProfiles, perGameProfilesEnabled },
   } = store.getState();
@@ -30,16 +32,13 @@ const saveControllerSettings = (store: any) => {
     currentGameId,
   };
 
-  serverApi?.callPluginMethod("save_controller_settings", {
-    payload,
-  });
+  saveControllerSettings(payload);
 };
 const debouncedSaveControllerSettings = debounce(saveControllerSettings, 300);
 
 export const saveControllerSettingsMiddleware =
   (store: any) => (next: any) => (action: any) => {
     const { type } = action;
-    const serverApi = getServerApi();
 
     const result = next(action);
 
@@ -56,22 +55,14 @@ export const saveControllerSettingsMiddleware =
         ? extractCurrentGameId()
         : "default";
 
-      serverApi?.callPluginMethod("sync_controller_settings", {
-        currentGameId,
-      });
+      syncControllerSettings(currentGameId);
     }
     if (type === controllerSlice.actions.setPerGameProfilesEnabled.type) {
-      serverApi?.callPluginMethod("save_per_game_profiles_enabled", {
-        enabled: Boolean(action.payload),
-      });
+      savePerGameProfilesEnabled(Boolean(action.payload));
       if (action.payload) {
-        serverApi?.callPluginMethod("sync_controller_settings", {
-          currentGameId: extractCurrentGameId(),
-        });
+        syncControllerSettings(extractCurrentGameId());
       } else {
-        serverApi?.callPluginMethod("sync_controller_settings", {
-          currentGameId: "default",
-        });
+        syncControllerSettings("default");
       }
     }
 

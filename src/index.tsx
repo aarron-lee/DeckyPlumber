@@ -1,7 +1,7 @@
-import { definePlugin, ServerAPI, staticClasses } from "@decky/ui";
-import { memo, VFC } from "react";
+import { definePlugin, staticClasses } from "@decky/ui";
+import { FC, memo } from "react";
 import ControllerPanel from "./components/controller/ControllerPanel";
-import { createServerApiHelpers, saveServerApi } from "./backend/utils";
+import { getSettings } from "./backend/utils";
 import { store } from "./redux-modules/store";
 import { getInitialLoading } from "./redux-modules/uiSlice";
 import { setInitialState } from "./redux-modules/extraActions";
@@ -12,7 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
 import { suspendResumeListeners } from "./redux-modules/steamListeners";
 
-const Content: VFC<{ serverAPI?: ServerAPI }> = memo(() => {
+const Content: FC = memo(() => {
   const loading = useSelector(getInitialLoading);
   if (loading) {
     return null;
@@ -29,18 +29,15 @@ const Content: VFC<{ serverAPI?: ServerAPI }> = memo(() => {
   );
 });
 
-const AppContainer: VFC<{ serverAPI: ServerAPI }> = ({ serverAPI }) => {
+const AppContainer: FC = () => {
   return (
     <Provider store={store}>
-      <Content serverAPI={serverAPI} />
+      <Content />
     </Provider>
   );
 };
 
-export default definePlugin((serverApi: ServerAPI) => {
-  saveServerApi(serverApi);
-  const { getSettings } = createServerApiHelpers(serverApi);
-
+export default definePlugin(() => {
   getSettings().then((result) => {
     // logInfo(result);
     if (result.success) {
@@ -56,7 +53,7 @@ export default definePlugin((serverApi: ServerAPI) => {
 
   return {
     title: <div className={staticClasses.Title}>DeckyPlumber</div>,
-    content: <AppContainer serverAPI={serverApi} />,
+    content: <AppContainer />,
     icon: (
       <img
         src={logo}
