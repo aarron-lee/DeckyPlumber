@@ -39,4 +39,4 @@ def execute_mode_change(mode):
         subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         with open (STATE_FILE,'w') as state:
             state.write(f'{mode}')
-            state.close
+            state.close()
