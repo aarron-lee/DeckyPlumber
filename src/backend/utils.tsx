@@ -4,6 +4,7 @@ import { callable, call } from "@decky/api";
 export enum ServerAPIMethods {
   LOG_INFO = "log_info",
   GET_SETTINGS = "get_settings",
+  GET_LATEST_VERSION_NUM = "get_latest_version_num",
   ON_SUSPEND = "on_suspend",
   ON_RESUME = "on_resume",
   SAVE_CONTROLLER_SETTINGS = "save_controller_settings",
@@ -59,18 +60,8 @@ export const extractDisplayName = () =>
 export const extractCurrentGameId = () =>
   `${Router.MainRunningApp?.appid || "default"}`;
 
-export const getLatestVersionNum = async (serverApi: ServerAPI) => {
-  const { result } = await serverApi.fetchNoCors(
-    "https://raw.githubusercontent.com/aarron-lee/DeckyPlumber/main/package.json",
-    { method: "GET" }
-  );
-
-  //@ts-ignore
-  const body = result.body as string;
-  if (body && typeof body === "string") {
-    return JSON.parse(body)["version"];
-  }
-  return "";
-};
+export const getLatestVersionNum = callable<[], any>(
+  ServerAPIMethods.GET_LATEST_VERSION_NUM
+);
 
 export const otaUpdate = callable<[], any>(ServerAPIMethods.OTA_UPDATE);

@@ -14,7 +14,7 @@ const OtaUpdates = () => {
 
   useEffect(() => {
     const fn = async () => {
-      const fetchedVersionNum = await getLatestVersionNum(serverApi);
+      const fetchedVersionNum = await getLatestVersionNum();
 
       setLatestVersionNum(fetchedVersionNum);
     };
