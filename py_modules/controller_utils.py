@@ -35,7 +35,7 @@ def execute_mode_change(mode):
             cmd = f'systemctl restart inputplumber'
             subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
-        cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" 1 "{mode}"'
+        cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" 3 "{mode}" keyboard mouse'
         subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         with open (STATE_FILE,'w') as state:
             state.write(f'{mode}')

@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { setCurrentGameId, setInitialState } from "./extraActions";
 import {
   extractCurrentGameId,
+  saveControllerSettings,
   savePerGameProfilesEnabled,
   syncControllerSettings,
 } from "../backend/utils";
@@ -19,7 +20,7 @@ const mutatingActionTypes = [
 ];
 
 // persist controller settings to the backend
-const saveControllerSettings = (store: any) => {
+const saveControllerSettingsToBackend = (store: any) => {
   const {
     controller: { controllerProfiles, perGameProfilesEnabled },
   } = store.getState();
@@ -34,7 +35,7 @@ const saveControllerSettings = (store: any) => {
 
   saveControllerSettings(payload);
 };
-const debouncedSaveControllerSettings = debounce(saveControllerSettings, 300);
+const debouncedSaveControllerSettings = debounce(saveControllerSettingsToBackend, 300);
 
 export const saveControllerSettingsMiddleware =
   (store: any) => (next: any) => (action: any) => {
