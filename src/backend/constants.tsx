@@ -13,3 +13,7 @@ export enum ControllerModes {
   DUAL_SENSE_EDGE = "ds5-edge",
   STEAM_DECK = "deck",
 }
+
+export enum AdvancedOptionsEnum {
+  ALWAYS_USE_DEFAULT = "ALWAYS_USE_DEFAULT",
+}

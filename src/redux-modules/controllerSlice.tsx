@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { get, merge } from "lodash";
+import { get, merge, set } from "lodash";
 import type { RootState } from "./store";
 import { setCurrentGameId, setInitialState } from "./extraActions";
 import { extractCurrentGameId } from "../backend/utils";
 import { Router } from "@decky/ui";
 import { ControllerModes } from "../backend/constants";
+
+export type AdvancedOption = {
+  name: string;
+  type: string;
+  defaultValue: any;
+  currentValue: any;
+  statePath: string;
+  description?: string;
+  disabled?: { [k: string]: any };
+};
 
 type ControllerProfile = {
   mode: ControllerModes;
@@ -22,11 +32,15 @@ type ControllerProfiles = {
 type ControllerState = {
   controllerProfiles: ControllerProfiles;
   perGameProfilesEnabled: boolean;
+  advancedOptions: AdvancedOption[];
+  advanced: { [optionName: string]: any };
 };
 
 const initialState: ControllerState = {
   controllerProfiles: {},
   perGameProfilesEnabled: false,
+  advanced: {},
+  advancedOptions: [],
 };
 
 const bootstrapControllerProfile = (
@@ -95,6 +109,14 @@ export const controllerSlice = createSlice({
         value: enabled,
       });
     },
+    updateAdvancedOption: (
+      state,
+      action: PayloadAction<{ statePath: string; value: any }>
+    ) => {
+      const { statePath, value } = action.payload;
+
+      set(state, `advanced.${statePath}`, value);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(setInitialState, (state, action) => {
@@ -103,7 +125,14 @@ export const controllerSlice = createSlice({
       const perGameProfilesEnabled = Boolean(
         action.payload.perGameProfilesEnabled
       );
+      const { advancedOptions } = action.payload;
 
+      if (advancedOptions) {
+        state.advancedOptions = advancedOptions;
+        advancedOptions.forEach((option: AdvancedOption) => {
+          set(state, `advanced.${option.statePath}`, option.currentValue);
+        });
+      }
       state.controllerProfiles = controllerProfiles;
       state.perGameProfilesEnabled = perGameProfilesEnabled;
     });
@@ -156,6 +185,12 @@ export const selectControllerProfileDisplayName = (state: RootState) => {
   } else {
     return "Default";
   }
+};
+
+export const selectAdvancedOptionsInfo = (state: RootState) => {
+  const { advanced, advancedOptions } = state.controller;
+
+  return { advancedState: advanced, advancedOptions };
 };
 
 // -------------

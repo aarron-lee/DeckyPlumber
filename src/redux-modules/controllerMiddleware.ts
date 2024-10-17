@@ -4,9 +4,10 @@ import {
   extractCurrentGameId,
   saveControllerSettings,
   savePerGameProfilesEnabled,
+  setSetting,
   syncControllerSettings,
 } from "../backend/utils";
-import { controllerSlice } from "./controllerSlice";
+import { controllerSlice, selectAdvancedOptionsInfo } from "./controllerSlice";
 
 // -------------
 // middleware
@@ -35,13 +36,18 @@ const saveControllerSettingsToBackend = (store: any) => {
 
   saveControllerSettings(payload);
 };
-const debouncedSaveControllerSettings = debounce(saveControllerSettingsToBackend, 300);
+const debouncedSaveControllerSettings = debounce(
+  saveControllerSettingsToBackend,
+  300
+);
 
 export const saveControllerSettingsMiddleware =
   (store: any) => (next: any) => (action: any) => {
     const { type } = action;
 
     const result = next(action);
+
+    const state = store.getState();
 
     if (mutatingActionTypes.includes(type)) {
       // save to backend
@@ -51,7 +57,7 @@ export const saveControllerSettingsMiddleware =
       // tell backend to sync controller to current FE state
       const {
         controller: { perGameProfilesEnabled },
-      } = store.getState();
+      } = state;
       const currentGameId = perGameProfilesEnabled
         ? extractCurrentGameId()
         : "default";
@@ -65,6 +71,15 @@ export const saveControllerSettingsMiddleware =
       } else {
         syncControllerSettings("default");
       }
+    }
+
+    if (action.type === controllerSlice.actions.updateAdvancedOption.type) {
+      const { advancedState } = selectAdvancedOptionsInfo(state);
+
+      setSetting({
+        name: "advanced",
+        value: advancedState,
+      });
     }
 
     return result;

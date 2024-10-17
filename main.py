@@ -2,10 +2,12 @@ import os
 import decky_plugin
 import controller_utils
 import device
+import advanced_options
 import file_timeout
 import plugin_update
 import plugin_settings
 from plugin_enums import ControllerModes
+
 class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):
@@ -16,6 +18,8 @@ class Plugin:
 
         try:
             results['pluginVersionNum'] = f'{decky_plugin.DECKY_PLUGIN_VERSION}'
+            results['advancedOptions'] = advanced_options.get_options()
+
 
             results['deviceName'] = device.get_device_name()
         except Exception as e:
@@ -25,6 +29,15 @@ class Plugin:
 
     async def save_per_game_profiles_enabled(self, enabled: bool):
         return plugin_settings.set_setting('perGameProfilesEnabled', enabled)
+
+    async def set_setting(self, name: str, value):
+        try:
+            advanced_options.handle_advanced_option_change(value)
+
+            return plugin_settings.set_setting(name, value)
+        except Exception as e:
+            decky_plugin.logger.error(f"error failed to set_setting {name}={value} {e}")
+
 
     async def save_controller_settings(self, payload):
         currentGameId = payload.get('currentGameId')
