@@ -2,7 +2,8 @@ from enum import Enum
 
 class ControllerModes(Enum):
     DEFAULT = "default"
-    XBOX = "xb360"
-    DUALSENSE_EDGE = "ds5-edge"
-    STEAM_DECK = "deck"
+    XBOX = "xbox-series"
     XBOX_ELITE = "xbox-elite"
+    DUAL_SENSE = "ds5"
+    DUAL_SENSE_EDGE = "ds5-edge"
+    STEAM_DECK = "deck"
