@@ -6,16 +6,18 @@ import { ControllerModes } from "../../backend/constants";
 
 enum Mode {
   DEFAULT = 0,
-  XBOX = 1,
-  DUALSENSE_EDGE = 2,
-  STEAM_DECK = 3,
-  XBOX_ELITE = 4,
+  XBOX,
+  DUAL_SENSE,
+  DUAL_SENSE_EDGE,
+  STEAM_DECK,
+  XBOX_ELITE,
 }
 
 const ModeToKey = {
   default: "DEFAULT",
   xb360: "XBOX",
-  "ds5-edge": "DUALSENSE_EDGE",
+  ds5: "DUAL_SENSE",
+  "ds5-edge": "DUAL_SENSE_EDGE",
   deck: "STEAM_DECK",
   "xbox-elite": "XBOX_ELITE",
 };
@@ -27,6 +29,7 @@ const ControllerModeSlider: FC = () => {
     const key = Mode[value] as
       | "DEFAULT"
       | "XBOX"
+      | "DUALSENSE"
       | "DUALSENSE_EDGE"
       | "STEAM_DECK"
       | "XBOX_ELITE";
