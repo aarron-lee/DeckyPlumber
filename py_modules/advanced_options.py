@@ -1,4 +1,3 @@
-import os
 import decky_plugin
 from plugin_settings import get_nested_setting
 from enum import Enum

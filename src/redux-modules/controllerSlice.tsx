@@ -5,7 +5,7 @@ import type { RootState } from "./store";
 import { setCurrentGameId, setInitialState } from "./extraActions";
 import { extractCurrentGameId } from "../backend/utils";
 import { Router } from "@decky/ui";
-import { ControllerModes } from "../backend/constants";
+import { AdvancedOptionsEnum, ControllerModes } from "../backend/constants";
 
 export type AdvancedOption = {
   name: string;
@@ -57,11 +57,21 @@ const bootstrapControllerProfile = (
     // always initialize default
     newGameId === "default"
   ) {
-    const defaultProfile = get(
+    let defaultProfile = get(
       state,
       "controllerProfiles.default",
       DEFAULT_CONTROLLER_PROFILE
     ) as ControllerProfile;
+
+    const alwaysUseDefault = get(
+      state,
+      `advanced.${AdvancedOptionsEnum.ALWAYS_USE_DEFAULT}`,
+      false
+    );
+
+    if (alwaysUseDefault) {
+      defaultProfile = DEFAULT_CONTROLLER_PROFILE as ControllerProfile;
+    }
 
     state.controllerProfiles[newGameId] = defaultProfile;
   }
@@ -191,6 +201,14 @@ export const selectAdvancedOptionsInfo = (state: RootState) => {
   const { advanced, advancedOptions } = state.controller;
 
   return { advancedState: advanced, advancedOptions };
+};
+
+export const selectAlwaysDefaultOption = (state: RootState) => {
+  const { advancedState } = selectAdvancedOptionsInfo(state);
+  const defaultOption = Boolean(
+    advancedState[AdvancedOptionsEnum.ALWAYS_USE_DEFAULT]
+  );
+  return defaultOption;
 };
 
 // -------------
