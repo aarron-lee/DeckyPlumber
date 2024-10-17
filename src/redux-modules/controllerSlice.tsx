@@ -101,7 +101,7 @@ export const controllerSlice = createSlice({
       const controllerProfiles = action.payload
         .controllerProfiles as ControllerProfiles;
       const perGameProfilesEnabled = Boolean(
-        action.payload.PerGameProfilesEnabled
+        action.payload.perGameProfilesEnabled
       );
 
       state.controllerProfiles = controllerProfiles;
