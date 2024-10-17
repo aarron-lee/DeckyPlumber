@@ -15,7 +15,7 @@ enum Mode {
 
 const ModeToKey = {
   default: "DEFAULT",
-  xb360: "XBOX",
+  "xbox-series": "XBOX",
   ds5: "DUAL_SENSE",
   "ds5-edge": "DUAL_SENSE_EDGE",
   deck: "STEAM_DECK",
