@@ -22,12 +22,14 @@ def get_value(setting, default_value = False):
 def get_options():
   options = []
 
+  default_value = False
+
   default_controller_mode = {
-    'name': 'Always use Default controller mode',
+    'name': 'Always use Default controller mode for per-game profiles',
     'type': 'boolean',
-    'defaultValue': False,
-    'description': "When a new per-game profile gets created, it always sets it as the default controller mode, not the default profile's mode",
-    'currentValue': get_value(DefaultSettings.ALWAYS_USE_DEFAULT, False),
+    'defaultValue': default_value,
+    'description': "When a new per-game profile gets created, it always sets it to the default controller mode, not the home screen's controller mode",
+    'currentValue': get_value(DefaultSettings.ALWAYS_USE_DEFAULT, default_value),
     'statePath': DefaultSettings.ALWAYS_USE_DEFAULT.value
   }
 
