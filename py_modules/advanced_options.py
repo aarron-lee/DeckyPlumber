@@ -1,9 +1,6 @@
 import decky_plugin
 from plugin_settings import get_nested_setting
-from enum import Enum
-
-class DefaultSettings(Enum):
-  ALWAYS_USE_DEFAULT = 'ALWAYS_USE_DEFAULT'
+from constants import DefaultSettings
 
 def get_setting(setting_name = ''):
   return get_nested_setting(f'advanced.{setting_name}')

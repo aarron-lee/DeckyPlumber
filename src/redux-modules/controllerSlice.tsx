@@ -60,7 +60,7 @@ const bootstrapControllerProfile = (
     let defaultProfile = get(
       state,
       "controllerProfiles.default",
-      undefined
+      DEFAULT_CONTROLLER_PROFILE
     ) as ControllerProfile;
 
     const alwaysUseDefault = get(
@@ -69,13 +69,11 @@ const bootstrapControllerProfile = (
       false
     );
 
-    if (alwaysUseDefault && !defaultProfile) {
-      // only override defaultProfile if it doesn't exist already
+    if (alwaysUseDefault) {
       defaultProfile = DEFAULT_CONTROLLER_PROFILE as ControllerProfile;
     }
 
-    state.controllerProfiles[newGameId] =
-      defaultProfile || DEFAULT_CONTROLLER_PROFILE;
+    state.controllerProfiles[newGameId] = defaultProfile;
   }
 };
 

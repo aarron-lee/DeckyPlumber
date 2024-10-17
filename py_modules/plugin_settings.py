@@ -1,8 +1,8 @@
 import os
 import subprocess
 from settings import SettingsManager
-from collections import deque 
-
+from collections import deque
+from constants import DefaultSettings
 
 settings_directory = os.environ["DECKY_PLUGIN_SETTINGS_DIR"]
 settings_path = os.path.join(settings_directory, 'settings.json')
@@ -41,8 +41,22 @@ def bootstrap_controller_settings(profileName: str):
     controller_profile = controller_profiles[profileName]
     default_controller_profile = controller_profiles.get('default')
 
-    if not controller_profile:
+    always_use_default = get_advanced_option(DefaultSettings.ALWAYS_USE_DEFAULT)
+
+    if not controller_profile and always_use_default:
+        controller_profile = DEFAULT_CONTROLLER_VALUES
+    elif not controller_profile:
         controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
+
+def get_advanced_option(setting, default_value = False):
+    current_val = get_nested_setting(
+        f'advanced.{setting.value}'
+    )
+
+    if isinstance(current_val, bool):
+        return current_val
+    else:
+        return default_value
 
 def get_controller_profile_for_game_id(game_id):
     s = get_settings()
