@@ -22,8 +22,8 @@ type ControllerProfile = {
 };
 
 const DEFAULT_CONTROLLER_PROFILE = {
-  mode: ControllerModes.DEFAULT,
-} as ControllerProfile;
+  mode: "default",
+};
 
 type ControllerProfiles = {
   [gameId: string]: ControllerProfile;
@@ -37,12 +37,34 @@ type ControllerState = {
 };
 
 const initialState: ControllerState = {
-  controllerProfiles: {
-    default: { mode: ControllerModes.DEFAULT },
-  },
+  controllerProfiles: {},
   perGameProfilesEnabled: false,
   advanced: {},
   advancedOptions: [],
+};
+
+const bootstrapControllerProfile = (
+  state: ControllerState,
+  newGameId: string
+) => {
+  if (!state.controllerProfiles) {
+    // controllerProfiles don't exist yet, create it
+    state.controllerProfiles = {};
+  }
+  if (
+    // only initialize profile if perGameProfiles are enabled
+    (!state.controllerProfiles[newGameId] && state.perGameProfilesEnabled) ||
+    // always initialize default
+    newGameId === "default"
+  ) {
+    const defaultProfile = get(
+      state,
+      "controllerProfiles.default",
+      DEFAULT_CONTROLLER_PROFILE
+    ) as ControllerProfile;
+
+    state.controllerProfiles[newGameId] = defaultProfile;
+  }
 };
 
 // const bootstrapControllerProfile = (
@@ -59,49 +81,25 @@ const initialState: ControllerState = {
 //     // always initialize default
 //     newGameId === "default"
 //   ) {
-//     const defaultProfile = get(
+//     let defaultProfile = get(
 //       state,
 //       "controllerProfiles.default",
 //       DEFAULT_CONTROLLER_PROFILE
 //     ) as ControllerProfile;
 
+//     const alwaysUseDefault = get(
+//       state,
+//       `advanced.${AdvancedOptionsEnum.ALWAYS_USE_DEFAULT}`,
+//       false
+//     );
+
+//     if (alwaysUseDefault) {
+//       defaultProfile = DEFAULT_CONTROLLER_PROFILE as ControllerProfile;
+//     }
+
 //     state.controllerProfiles[newGameId] = defaultProfile;
 //   }
 // };
-
-const bootstrapControllerProfile = (
-  state: ControllerState,
-  newGameId: string
-) => {
-  if (!state.controllerProfiles) {
-    // controllerProfiles don't exist yet, create it
-    state.controllerProfiles = {};
-  }
-  if (
-    // only initialize profile if perGameProfiles are enabled
-    (!state.controllerProfiles[newGameId] && state.perGameProfilesEnabled) ||
-    // always initialize default
-    newGameId === "default"
-  ) {
-    let defaultProfile = get(
-      state,
-      "controllerProfiles.default",
-      DEFAULT_CONTROLLER_PROFILE
-    ) as ControllerProfile;
-
-    const alwaysUseDefault = get(
-      state,
-      `advanced.${AdvancedOptionsEnum.ALWAYS_USE_DEFAULT}`,
-      false
-    );
-
-    if (alwaysUseDefault) {
-      defaultProfile = DEFAULT_CONTROLLER_PROFILE;
-    }
-
-    state.controllerProfiles[newGameId] = defaultProfile;
-  }
-};
 
 export const controllerSlice = createSlice({
   name: "controller",
