@@ -11,6 +11,7 @@ import logo from "../assets/Icon.png";
 import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
 import { suspendResumeListeners } from "./redux-modules/steamListeners";
+import Options from "./components/controller/Options";
 
 const Content: FC = memo(() => {
   const loading = useSelector(getInitialLoading);
@@ -21,6 +22,9 @@ const Content: FC = memo(() => {
     <>
       <ErrorBoundary title={"Controller Mode"}>
         <ControllerPanel />
+      </ErrorBoundary>
+      <ErrorBoundary title={"Options"}>
+        <Options />
       </ErrorBoundary>
       <ErrorBoundary>
         <OtaUpdates />

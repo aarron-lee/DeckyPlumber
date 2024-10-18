@@ -5,6 +5,7 @@ export enum ServerAPIMethods {
   LOG_INFO = "log_info",
   GET_SETTINGS = "get_settings",
   GET_LATEST_VERSION_NUM = "get_latest_version_num",
+  SET_SETTING = "set_setting",
   ON_SUSPEND = "on_suspend",
   ON_RESUME = "on_resume",
   SAVE_CONTROLLER_SETTINGS = "save_controller_settings",
@@ -63,5 +64,9 @@ export const extractCurrentGameId = () =>
 export const getLatestVersionNum = callable<[], any>(
   ServerAPIMethods.GET_LATEST_VERSION_NUM
 );
+
+export const setSetting = ({ name, value }: { name: string; value: any }) => {
+  return call(ServerAPIMethods.SET_SETTING, name, value);
+};
 
 export const otaUpdate = callable<[], any>(ServerAPIMethods.OTA_UPDATE);

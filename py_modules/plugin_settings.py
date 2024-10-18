@@ -1,6 +1,8 @@
 import os
 import subprocess
 from settings import SettingsManager
+from collections import deque
+from constants import DefaultSettings
 
 settings_directory = os.environ["DECKY_PLUGIN_SETTINGS_DIR"]
 settings_path = os.path.join(settings_directory, 'settings.json')
@@ -79,3 +81,17 @@ def set_all_controller_profiles(controller_profiles):
             profileName=profileName,
             values=controllerProfile
         )
+
+def get_nested_setting(path):
+  if not path:
+    return None
+
+  settings = get_settings()
+  pathValues = deque(path.split('.'))
+
+  result = settings
+
+  while len(pathValues) > 0 and result:
+    result = result.get(pathValues.popleft())
+
+  return result
