@@ -30,20 +30,6 @@ DEFAULT_CONTROLLER_VALUES = {
   "mode": "default"
 }
 
-def bootstrap_controller_settings(profileName: str):
-    settings = get_settings()
-
-    if not settings.get('controllerProfiles'):
-        settings['controllerProfiles'] = {}
-    controller_profiles = settings['controllerProfiles']
-    if not controller_profiles.get(profileName):
-        controller_profiles[profileName] = {}
-    controller_profile = controller_profiles[profileName]
-    default_controller_profile = controller_profiles.get('default')
-
-    if not controller_profile:
-        controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
-
 # def bootstrap_controller_settings(profileName: str):
 #     settings = get_settings()
 
@@ -55,22 +41,36 @@ def bootstrap_controller_settings(profileName: str):
 #     controller_profile = controller_profiles[profileName]
 #     default_controller_profile = controller_profiles.get('default')
 
-#     always_use_default = get_advanced_option(DefaultSettings.ALWAYS_USE_DEFAULT)
-
-#     if not controller_profile and always_use_default:
-#         controller_profile = DEFAULT_CONTROLLER_VALUES
-#     elif not controller_profile:
+#     if not controller_profile:
 #         controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
 
-# def get_advanced_option(setting, default_value = False):
-#     current_val = get_nested_setting(
-#         f'advanced.{setting.value}'
-#     )
+def bootstrap_controller_settings(profileName: str):
+    settings = get_settings()
 
-#     if isinstance(current_val, bool):
-#         return current_val
-#     else:
-#         return default_value
+    if not settings.get('controllerProfiles'):
+        settings['controllerProfiles'] = {}
+    controller_profiles = settings['controllerProfiles']
+    if not controller_profiles.get(profileName):
+        controller_profiles[profileName] = {}
+    controller_profile = controller_profiles[profileName]
+    default_controller_profile = controller_profiles.get('default')
+
+    always_use_default = get_advanced_option(DefaultSettings.ALWAYS_USE_DEFAULT)
+
+    if not controller_profile and always_use_default:
+        controller_profile = DEFAULT_CONTROLLER_VALUES
+    elif not controller_profile:
+        controller_profile = default_controller_profile or DEFAULT_CONTROLLER_VALUES
+
+def get_advanced_option(setting, default_value = False):
+    current_val = get_nested_setting(
+        f'advanced.{setting.value}'
+    )
+
+    if isinstance(current_val, bool):
+        return current_val
+    else:
+        return default_value
 
 def get_controller_profile_for_game_id(game_id):
     s = get_settings()
