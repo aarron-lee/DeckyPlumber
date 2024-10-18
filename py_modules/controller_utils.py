@@ -22,13 +22,14 @@ def set_controller_mode(mode):
         with file_timeout.time_limit(2):
             decky_plugin.logger.info(f'setting mode {mode}')
 
-            state_file = open(STATE_FILE, 'r')
-            current_mode = state_file.read().strip()
-            state_file.close()
+            if os.path.exists(STATE_FILE):
+                state_file = open(STATE_FILE, 'r')
+                current_mode = state_file.read().strip()
+                state_file.close()
 
-            if current_mode == mode:
-                decky_plugin.logger.info(f'controller mode is already {mode}')
-                return
+                if current_mode == mode:
+                    decky_plugin.logger.info(f'controller mode is already {mode}')
+                    return
 
             execute_mode_change(mode)
     except Exception as e:
