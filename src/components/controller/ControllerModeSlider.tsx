@@ -8,7 +8,7 @@ enum Mode {
   DEFAULT = 0,
   XBOX,
   XBOX_ELITE,
-  DUAL_SENSE,
+  // DUAL_SENSE,
   DUAL_SENSE_EDGE,
   STEAM_DECK,
 }
@@ -17,7 +17,7 @@ const ModeToKey = {
   default: "DEFAULT",
   "xbox-series": "XBOX",
   "xbox-elite": "XBOX_ELITE",
-  ds5: "DUAL_SENSE",
+  // ds5: "DUAL_SENSE",
   "ds5-edge": "DUAL_SENSE_EDGE",
   deck: "STEAM_DECK",
 };
@@ -30,9 +30,9 @@ const ControllerModeSlider: FC = () => {
       | "DEFAULT"
       | "XBOX"
       | "XBOX_ELITE"
-      | "DUALSENSE"
       | "DUALSENSE_EDGE"
       | "STEAM_DECK";
+    // | "DUALSENSE";
 
     return setMode(ControllerModes[key]);
   };
