@@ -50,22 +50,10 @@ class Plugin:
         return result
 
     async def on_suspend(self, currentGameId):
-        mode = plugin_settings.get_controller_mode_for_game_id(currentGameId)
-
-        if mode and mode == ControllerModes.STEAM_DECK.value:
-            # Steam Deck Controller breaks on suspend, so temporarily set to default instead
-            controller_utils.set_controller_mode(
-                ControllerModes.DEFAULT.value
-            )
+        decky_plugin.logger.info(f"on_suspend called with {currentGameId}")
 
     async def on_resume(self, currentGameId):
-        mode = plugin_settings.get_controller_mode_for_game_id(currentGameId)
-
-        if mode and mode == ControllerModes.STEAM_DECK.value:
-             # if deck on_resume, enable STEAM_DECK
-            controller_utils.set_controller_mode(
-                ControllerModes.STEAM_DECK.value
-            )
+        decky_plugin.logger.info(f"on_resume called with {currentGameId}")
 
     # sync state in settings.json to actual controller hardware
     async def sync_controller_settings(self, currentGameId):
