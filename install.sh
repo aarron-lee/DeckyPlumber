@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # does the following:
 # - controller config via DeckyPlumber Decky Plugin
-VERSION=${VERSION_TAG:-"LATEST"}
+VERSION=${VERSION:-"LATEST"}
 
 if [ "$EUID" -eq 0 ]
   then echo "Please do not run as root"
@@ -14,12 +14,14 @@ cd $HOME
 
 sudo rm -rf $HOME/homebrew/plugins/DeckyPlumber
 
-echo "installing DeckyPlumber plugin for control configs"
+echo "installing DeckyPlumber plugin $VERSION for control configs"
 
 FINAL_URL='https://api.github.com/repos/aarron-lee/DeckyPlumber/releases/latest'
 if [ $VERSION != "LATEST" ] ; then
-  FINAL_URL="https://api.github.com/repos/aarron-lee/DeckyPlumber/releases/tags/${VERSION}"
+  FINAL_URL="https://api.github.com/repos/aarron-lee/DeckyPlumber/releases/tags/$VERSION"
 fi
+
+echo $FINAL_URL
 
 # download + install plugin
 curl -L $(curl -s $FINAL_URL | grep "browser_download_url" | cut -d '"' -f 4) -o $HOME/DeckyPlumber.tar.gz

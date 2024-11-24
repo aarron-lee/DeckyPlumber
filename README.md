@@ -23,6 +23,14 @@ curl -L https://github.com/aarron-lee/DeckyPlumber/raw/main/install.sh | sh
 
 ```
 
+If you want to install an older version, you can do the following:
+
+```bash
+# example: install v0.0.6
+curl -L https://github.com/aarron-lee/DeckyPlumber/raw/main/install.sh | VERSION=v0.0.6 sh
+
+```
+
 ### Manual Install
 
 Download the latest release from the [releases page](https://github.com/aarron-lee/DeckyPlumber/releases)
