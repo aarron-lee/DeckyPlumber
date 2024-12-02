@@ -9,6 +9,7 @@ import { ButtonItem, Field, PanelSection, PanelSectionRow } from "@decky/ui";
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
   const installedVersionNum = useSelector(getPluginVersionNumSelector);
   const deviceName = useSelector(getDeviceNameSelector);
 
@@ -47,12 +48,14 @@ const OtaUpdates = () => {
       {Boolean(latestVersionNum) && (
         <PanelSectionRow>
           <ButtonItem
-            onClick={() => {
-              otaUpdate();
+            onClick={async () => {
+              setIsUpdating(true);
+              await otaUpdate();
+              setIsUpdating(false);
             }}
             layout={"below"}
           >
-            {buttonText}
+            {isUpdating ? "Updating..." : buttonText}
           </ButtonItem>
         </PanelSectionRow>
       )}
