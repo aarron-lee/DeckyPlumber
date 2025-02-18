@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@decky/api':
-    specifier: ^1.0.6
+    specifier: ^1.1.2
     version: 1.1.2
   '@decky/ui':
-    specifier: ^4.4.0
-    version: 4.7.2
+    specifier: ^4.9.1
+    version: 4.9.1
   '@reduxjs/toolkit':
     specifier: ^1.9.7
     version: 1.9.7(react-redux@8.1.3)
@@ -18,7 +18,7 @@ dependencies:
     specifier: ^4.17.21
     version: 4.17.21
   react-icons:
-    specifier: ^4.4.0
+    specifier: ^4.9.0
     version: 4.9.0
   react-redux:
     specifier: ^8.1.3
@@ -107,8 +107,8 @@ packages:
       typescript: 5.6.2
     dev: true
 
-  /@decky/ui@4.7.2:
-    resolution: {integrity: sha512-jYXVhbyyupXAcCuFqr7G2qjYVjp8hlMGF8zl8ALv67y0YhikAtfhA2rGUjCuaV3kdo9YrpBh8djRUJXdFPg/Eg==}
+  /@decky/ui@4.9.1:
+    resolution: {integrity: sha512-vVDi5usqBBvEw+ij87GciuaCnysjjTfkNFjDaMM1EzDvNpquKXWHNxNbbsRBZzv4qcjXPxNHU9zZ6VaKpVPVRA==}
     dev: false
 
   /@isaacs/cliui@8.0.2:
