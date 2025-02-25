@@ -1,4 +1,5 @@
 import decky_plugin
+import device
 import time
 import os
 import subprocess
@@ -65,7 +66,12 @@ def execute_mode_change(mode):
                 env=get_env(),
             )
         else:
-            cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" 3 "{mode}" keyboard mouse'
+            inputplumber_args = f'3 "{mode}" keyboard mouse'
+
+            if device.is_legion_go():
+                inputplumber_args = f'3 "{mode}" keyboard touchpad'
+
+            cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" {inputplumber_args}'
             subprocess.run(
                 cmd,
                 shell=True,
