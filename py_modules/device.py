@@ -7,6 +7,7 @@ class Devices(Enum):
   LEGION_GO = "83E1"
   ROG_ALLY = "ROG Ally RC71"
   ROG_ALLY_X = "ROG Ally X RC72"
+  AYANEO_FLIP_DS = "FLIP DS"
 
 DEVICE_NAME = None
 
@@ -43,5 +44,12 @@ def is_legion_go():
   device_name = get_device_name()
 
   if device_name == Devices.LEGION_GO.value:
+    return True
+  return False
+
+def is_ayaneo_flip_ds():
+  device_name = get_device_name()
+
+  if device_name == Devices.AYANEO_FLIP_DS.value:
     return True
   return False

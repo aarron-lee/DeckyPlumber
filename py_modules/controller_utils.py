@@ -70,6 +70,8 @@ def execute_mode_change(mode):
 
             if device.is_legion_go():
                 inputplumber_args = f'3 "{mode}" keyboard touchpad'
+            if device.is_ayaneo_flip_ds():
+                inputplumber_args = f'4 "{mode}" keyboard mouse touchscreen'
 
             cmd = f'busctl call org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice SetTargetDevices "as" {inputplumber_args}'
             subprocess.run(
