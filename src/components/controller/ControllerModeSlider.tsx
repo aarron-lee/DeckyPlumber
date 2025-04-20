@@ -12,6 +12,7 @@ enum Mode {
   DUAL_SENSE_EDGE,
   HORI_STEAM,
   STEAM_DECK,
+  DECK_UHID,
 }
 
 const ModeToKey = {
@@ -22,6 +23,7 @@ const ModeToKey = {
   "ds5-edge": "DUAL_SENSE_EDGE",
   "hori-steam": "HORI_STEAM",
   deck: "STEAM_DECK",
+  "deck-uhid": "DECK_UHID",
 };
 
 const ControllerModeSlider: FC = () => {
@@ -33,9 +35,10 @@ const ControllerModeSlider: FC = () => {
       | "XBOX"
       | "XBOX_ELITE"
       | "DUAL_SENSE"
-      | "DUALSENSE_EDGE"
+      | "DUAL_SENSE_EDGE"
       | "HORI_STEAM"
-      | "STEAM_DECK";
+      | "STEAM_DECK"
+      | "DECK_UHID";
 
     return setMode(ControllerModes[key]);
   };
