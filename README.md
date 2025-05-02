@@ -1,5 +1,7 @@
 # DeckyPlumber - Decky Plugin
 
+[![](https://img.shields.io/github/downloads/aarron-lee/DeckyPlumber/total.svg)](https://github.com/aarron-lee/DeckyPlumber/releases)
+
 Simple Decky Plugin for changing InputPlumber controller mode
 
 ![plugin image](./img/decky_plumber.png)
