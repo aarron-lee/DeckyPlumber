@@ -2,13 +2,22 @@
 
 [![](https://img.shields.io/github/downloads/aarron-lee/DeckyPlumber/total.svg)](https://github.com/aarron-lee/DeckyPlumber/releases)
 
-Simple Decky Plugin for changing InputPlumber controller mode
+Decky Plugin for changing InputPlumber controller mode
 
 ![plugin image](./img/decky_plumber.png)
 
 # Prerequisites
 
 Works only on devices with InputPlumber running
+
+If you are on the latest SteamOS, it ships with InputPlumber installed. However, it might not be enabled out of the box.
+
+To manually enable it, run:
+
+```bash
+sudo systemctl enable --now inputplumber.service
+sudo systemctl enable --now inputplumber-suspend.service
+```
 
 # Install
 
