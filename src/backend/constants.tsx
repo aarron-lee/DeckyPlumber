@@ -13,7 +13,6 @@ export enum ControllerModes {
   DUAL_SENSE_EDGE = "ds5-edge",
   HORI_STEAM = "hori-steam",
   STEAM_DECK = "deck",
-  DECK_UHID = "deck-uhid",
 }
 
 export enum AdvancedOptionsEnum {
