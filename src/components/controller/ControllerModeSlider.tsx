@@ -33,7 +33,7 @@ const ControllerModeSlider: FC = () => {
       | "XBOX"
       | "XBOX_ELITE"
       | "DUAL_SENSE"
-      | "DUALSENSE_EDGE"
+      | "DUAL_SENSE_EDGE"
       | "HORI_STEAM"
       | "STEAM_DECK";
 
