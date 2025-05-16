@@ -21,7 +21,7 @@ const ModeToKey = {
   ds5: "DUAL_SENSE",
   "ds5-edge": "DUAL_SENSE_EDGE",
   "hori-steam": "HORI_STEAM",
-  deck: "STEAM_DECK",
+  "deck-uhid": "STEAM_DECK",
 };
 
 const ControllerModeSlider: FC = () => {

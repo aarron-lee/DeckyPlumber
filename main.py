@@ -6,6 +6,7 @@ import advanced_options
 import file_timeout
 import plugin_update
 import plugin_settings
+import migrations
 from plugin_enums import ControllerModes
 
 class Plugin:
@@ -78,6 +79,10 @@ class Plugin:
     # Migrations that should be performed before entering `_main()`.
     async def _migration(self):
         decky_plugin.logger.info("Migrations")
+        try:
+            migrations.migrate_deck_target()
+        except Exception as e:
+            decky_plugin.logger.error("{__name__} error during migrations {e}")
 
     async def log_info(self, info):
         decky_plugin.logger.info(info)
