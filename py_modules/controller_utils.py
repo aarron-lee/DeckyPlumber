@@ -7,7 +7,7 @@ import file_timeout
 import plugin_settings as settings
 import plugin_enums
 
-STATE_FILE = "/tmp/.deckyplumber.state"
+STATE_FILE = "/tmp/.inputplumber.state"
 
 
 def get_env():
