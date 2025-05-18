@@ -16,7 +16,6 @@ To manually enable it, run:
 
 ```bash
 sudo systemctl enable --now inputplumber.service
-sudo systemctl enable --now inputplumber-suspend.service
 ```
 
 # Install
