@@ -9,6 +9,10 @@ import shutil
 
 API_URL = "http://api.github.com/repos/aarron-lee/DeckyPlumber/releases/latest"
 
+def get_env():
+    env = os.environ.copy()
+    env["LD_LIBRARY_PATH"] = ""
+    return env
 
 def recursive_chmod(path, perms):
   for dirpath, dirnames, filenames in os.walk(path):
@@ -55,7 +59,7 @@ def ota_update():
 
     cmd = f'echo "systemctl restart plugin_loader.service" | sh'
 
-    result = subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = subprocess.run(cmd, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=get_env())
 
     return result
 
