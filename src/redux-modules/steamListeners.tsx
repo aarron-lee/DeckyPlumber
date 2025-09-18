@@ -1,21 +1,29 @@
 import { extractCurrentGameId, onResume, onSuspend } from "../backend/utils";
 
 function suspendListener() {
-  const unregister = SteamClient.System.RegisterForOnSuspendRequest(() => {
-    const currentGameId = extractCurrentGameId();
+  try {
+    const unregister = SteamClient.System.RegisterForOnSuspendRequest(() => {
+      const currentGameId = extractCurrentGameId();
 
-    onSuspend(currentGameId);
-  });
-  return unregister;
+      onSuspend(currentGameId);
+    });
+    return unregister;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 function resumeListener() {
-  const unregister = SteamClient.System.RegisterForOnResumeFromSuspend(() => {
-    const currentGameId = extractCurrentGameId();
+  try {
+    const unregister = SteamClient.System.RegisterForOnResumeFromSuspend(() => {
+      const currentGameId = extractCurrentGameId();
 
-    onResume(currentGameId);
-  });
-  return unregister;
+      onResume(currentGameId);
+    });
+    return unregister;
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export const suspendResumeListeners = () => {
