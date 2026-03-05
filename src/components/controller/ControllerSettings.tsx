@@ -1,11 +1,11 @@
 import { FC } from "react";
-import ControllerModeSlider from "./ControllerModeSlider";
+import ControllerModeDropdown from "./ControllerModeDropdown";
 import { PanelSectionRow } from "@decky/ui";
 
 export const ControllerSettings: FC = () => {
   return (
     <PanelSectionRow>
-      <ControllerModeSlider />
+      <ControllerModeDropdown />
     </PanelSectionRow>
   );
 };
