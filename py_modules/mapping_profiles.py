@@ -398,16 +398,28 @@ def build_combined_yaml(active_profile_ids, merge_base=False):
 
 
 def apply_mapping_profiles(active_profile_ids, merge_base=False):
-    """Build combined YAML and apply via DBus LoadProfileFromYaml."""
+    """Build combined YAML and apply via DBus LoadProfileFromYaml.
+
+    Does nothing when no profiles are active, so InputPlumber keeps its
+    current configuration untouched.
+    """
+    decky_plugin.logger.debug(
+        f"[apply] called with ids={active_profile_ids!r}, merge_base={merge_base}"
+    )
+    if not active_profile_ids:
+        decky_plugin.logger.debug(
+            "[apply] No active mapping profiles — skipping LoadProfileFromYaml"
+        )
+        return
+
     try:
         with file_timeout.time_limit(2):
             profile_yaml = build_combined_yaml(
-                active_profile_ids or [], merge_base=merge_base
+                active_profile_ids, merge_base=merge_base
             )
 
-            decky_plugin.logger.info(
-                f"Applying mapping profiles: {active_profile_ids or '(none)'}"
-                f" (merge_base={merge_base})"
+            decky_plugin.logger.debug(
+                f"[apply] YAML to send:\n{profile_yaml}"
             )
 
             cmd = [

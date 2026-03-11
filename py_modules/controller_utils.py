@@ -11,6 +11,17 @@ import mapping_profiles
 STATE_FILE = "/tmp/.inputplumber.state"
 
 
+def clear_state_file():
+    """Remove stale state so the next sync re-applies the mode.
+
+    Called on plugin startup to handle cases where InputPlumber was
+    restarted externally while the plugin was not running.
+    """
+    if os.path.exists(STATE_FILE):
+        os.remove(STATE_FILE)
+        decky_plugin.logger.info("Cleared stale controller state file")
+
+
 def get_env():
     env = os.environ.copy()
     env["LD_LIBRARY_PATH"] = ""
@@ -18,7 +29,13 @@ def get_env():
 
 
 def sync_controller_settings(current_game_id):
+    decky_plugin.logger.debug(
+        f"[sync] called for game_id={current_game_id!r}"
+    )
     controller_profile = settings.get_controller_profile_for_game_id(current_game_id)
+    decky_plugin.logger.debug(
+        f"[sync] controller_profile={controller_profile}"
+    )
 
     mode = controller_profile.get("mode")
 
@@ -32,6 +49,9 @@ def sync_controller_settings(current_game_id):
 
     active_profiles = controller_profile.get("activeProfiles", [])
     merge_base = settings.get_settings().get("mergeBaseProfile", True)
+    decky_plugin.logger.debug(
+        f"[sync] active_profiles={active_profiles}, merge_base={merge_base}"
+    )
     mapping_profiles.apply_mapping_profiles(active_profiles, merge_base=merge_base)
 
 

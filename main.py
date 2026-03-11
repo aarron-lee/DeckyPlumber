@@ -14,6 +14,7 @@ class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):
         decky_plugin.logger.info("Hello World!")
+        controller_utils.clear_state_file()
         try:
             mapping_profiles.capture_base_profile()
         except Exception as e:
