@@ -6,6 +6,7 @@ import advanced_options
 import file_timeout
 import plugin_update
 import plugin_settings
+import mapping_profiles
 import migrations
 from plugin_enums import ControllerModes
 
@@ -20,8 +21,7 @@ class Plugin:
         try:
             results['pluginVersionNum'] = f'{decky_plugin.DECKY_PLUGIN_VERSION}'
             results['advancedOptions'] = advanced_options.get_options()
-
-
+            results['mappingProfiles'] = mapping_profiles.get_all_profiles()
             results['deviceName'] = device.get_device_name()
         except Exception as e:
             decky_plugin.logger.error(e)

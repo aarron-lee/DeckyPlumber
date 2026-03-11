@@ -10,6 +10,7 @@ import { currentGameIdListener } from "./backend/currentGameIdListener";
 import { IoGameController } from "react-icons/io5";
 import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
+import MappingProfiles from "./components/controller/MappingProfiles";
 import { suspendResumeListeners } from "./redux-modules/steamListeners";
 import Options from "./components/controller/Options";
 
@@ -22,6 +23,9 @@ const Content: FC = memo(() => {
     <>
       <ErrorBoundary title={"Controller Mode"}>
         <ControllerPanel />
+      </ErrorBoundary>
+      <ErrorBoundary title={"Mapping Profiles"}>
+        <MappingProfiles />
       </ErrorBoundary>
       <ErrorBoundary title={"Options"}>
         <Options />

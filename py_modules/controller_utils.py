@@ -6,6 +6,7 @@ import subprocess
 import file_timeout
 import plugin_settings as settings
 import plugin_enums
+import mapping_profiles
 
 STATE_FILE = "/tmp/.inputplumber.state"
 
@@ -24,6 +25,9 @@ def sync_controller_settings(current_game_id):
 
     if mode:
         set_controller_mode(mode)
+
+    active_profiles = controller_profile.get("activeProfiles", [])
+    mapping_profiles.apply_mapping_profiles(active_profiles)
 
 
 def set_controller_mode(mode):

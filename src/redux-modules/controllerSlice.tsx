@@ -17,8 +17,15 @@ export type AdvancedOption = {
   disabled?: { [k: string]: any };
 };
 
+export type MappingProfileInfo = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
 type ControllerProfile = {
   mode: ControllerModes;
+  activeProfiles?: string[];
 };
 
 const DEFAULT_CONTROLLER_PROFILE = {
@@ -34,6 +41,7 @@ type ControllerState = {
   perGameProfilesEnabled: boolean;
   advancedOptions: AdvancedOption[];
   advanced: { [optionName: string]: any };
+  mappingProfiles: MappingProfileInfo[];
 };
 
 const initialState: ControllerState = {
@@ -41,6 +49,7 @@ const initialState: ControllerState = {
   perGameProfilesEnabled: false,
   advanced: {},
   advancedOptions: [],
+  mappingProfiles: [],
 };
 
 const bootstrapControllerProfile = (
@@ -109,6 +118,30 @@ export const controllerSlice = createSlice({
         value: enabled,
       });
     },
+    toggleMappingProfile: (
+      state,
+      action: PayloadAction<{ profileId: string; enabled: boolean }>
+    ) => {
+      const { profileId, enabled } = action.payload;
+      const currentGameId = extractCurrentGameId();
+      const key = state.perGameProfilesEnabled ? currentGameId : "default";
+      const profile = state.controllerProfiles[key];
+
+      if (!profile) return;
+
+      if (!profile.activeProfiles) {
+        profile.activeProfiles = [];
+      }
+      if (enabled) {
+        if (!profile.activeProfiles.includes(profileId)) {
+          profile.activeProfiles.push(profileId);
+        }
+      } else {
+        profile.activeProfiles = profile.activeProfiles.filter(
+          (id) => id !== profileId
+        );
+      }
+    },
     updateAdvancedOption: (
       state,
       action: PayloadAction<{ statePath: string; value: any }>
@@ -125,13 +158,16 @@ export const controllerSlice = createSlice({
       const perGameProfilesEnabled = Boolean(
         action.payload.perGameProfilesEnabled
       );
-      const { advancedOptions } = action.payload;
+      const { advancedOptions, mappingProfiles } = action.payload;
 
       if (advancedOptions) {
         state.advancedOptions = advancedOptions;
         advancedOptions.forEach((option: AdvancedOption) => {
           set(state, `advanced.${option.statePath}`, option.currentValue);
         });
+      }
+      if (mappingProfiles) {
+        state.mappingProfiles = mappingProfiles;
       }
       state.controllerProfiles = controllerProfiles;
       state.perGameProfilesEnabled = perGameProfilesEnabled;
@@ -218,6 +254,17 @@ export const selectAlwaysDefaultOption = (state: RootState) => {
     advancedState[AdvancedOptionsEnum.ALWAYS_USE_DEFAULT]
   );
   return defaultOption;
+};
+
+export const selectMappingProfiles = (state: RootState): MappingProfileInfo[] =>
+  state.controller.mappingProfiles;
+
+export const selectActiveProfiles = (state: RootState): string[] => {
+  const currentGameId = extractCurrentGameId();
+  const key = state.controller.perGameProfilesEnabled
+    ? currentGameId
+    : "default";
+  return state.controller.controllerProfiles[key]?.activeProfiles || [];
 };
 
 // -------------

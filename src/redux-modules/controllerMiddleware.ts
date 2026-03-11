@@ -17,6 +17,7 @@ const mutatingActionTypes = [
   controllerSlice.actions.updateControllerProfiles.type,
   controllerSlice.actions.setPerGameProfilesEnabled.type,
   controllerSlice.actions.setControllerMode.type,
+  controllerSlice.actions.toggleMappingProfile.type,
   setCurrentGameId.type,
 ];
 
