@@ -6,6 +6,8 @@ import {
   describeCapability,
   displayValue,
 } from "./eventRegistry";
+import { L } from "../../i18n";
+import { t } from "i18next";
 
 type Props = {
   value: CapabilityConfig;
@@ -87,21 +89,21 @@ const EventSelector: FC<Props> = ({ value, onChange, label }) => {
   return (
     <>
       <DropdownItem
-        label={label ? `${label} — Type` : "Type"}
+        label={label ? `${label} — ${t(L.TYPE)}` : t(L.TYPE)}
         rgOptions={categoryOptions}
         selectedOption={selectedCategory}
         onChange={handleCategoryChange}
       />
       {subTypeOptions.length > 1 && (
         <DropdownItem
-          label={label ? `${label} — Sub-type` : "Sub-type"}
+          label={label ? `${label} — ${t(L.SUB_TYPE)}` : t(L.SUB_TYPE)}
           rgOptions={subTypeOptions}
           selectedOption={selectedSubType}
           onChange={handleSubTypeChange}
         />
       )}
       <DropdownItem
-        label={label ? `${label} — Value` : "Value"}
+        label={label ? `${label} — ${t(L.VALUE)}` : t(L.VALUE)}
         rgOptions={valueOptions}
         selectedOption={selectedValue}
         onChange={handleValueChange}

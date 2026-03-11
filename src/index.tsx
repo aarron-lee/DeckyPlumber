@@ -17,6 +17,8 @@ import Options from "./components/controller/Options";
 import ProfilesManagePage from "./pages/ProfilesManagePage";
 import AboutPage from "./pages/AboutPage";
 import { DECKY_PLUMBER_ROUTE } from "./consts";
+import { localizationManager, L } from "./i18n";
+import { t } from "i18next";
 
 const Content: FC = memo(() => {
   const loading = useSelector(getInitialLoading);
@@ -25,13 +27,13 @@ const Content: FC = memo(() => {
   }
   return (
     <>
-      <ErrorBoundary title={"Controller Mode"}>
+      <ErrorBoundary title={t(L.CONTROLLER_MODE)}>
         <ControllerPanel />
       </ErrorBoundary>
-      <ErrorBoundary title={"Mapping"}>
+      <ErrorBoundary title={t(L.MAPPING)}>
         <MappingProfiles />
       </ErrorBoundary>
-      <ErrorBoundary title={"Options"}>
+      <ErrorBoundary title={t(L.OPTIONS)}>
         <Options />
       </ErrorBoundary>
       <ErrorBoundary>
@@ -57,12 +59,12 @@ const DeckyPlumberRouter: FC = () => {
         showTitle
         pages={[
           {
-            title: "Mapping Profiles",
+            title: t(L.MAPPING_PROFILES),
             content: <ProfilesManagePage />,
             route: `${DECKY_PLUMBER_ROUTE}/profiles`,
           },
           {
-            title: "About",
+            title: t(L.ABOUT),
             content: <AboutPage />,
             route: `${DECKY_PLUMBER_ROUTE}/about`,
           },
@@ -73,6 +75,8 @@ const DeckyPlumberRouter: FC = () => {
 };
 
 export default definePlugin(() => {
+  localizationManager.init();
+
   getSettings().then((result) => {
     const results = result || {};
 

@@ -16,6 +16,8 @@ import {
   selectMergeBaseProfile,
 } from "../../redux-modules/controllerSlice";
 import { DECKY_PLUMBER_ROUTE } from "../../consts";
+import { L } from "../../i18n";
+import { t } from "i18next";
 
 const MappingProfiles: FC = () => {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ const MappingProfiles: FC = () => {
   const profileInfo = useSelector(selectCurrentProfileInfo);
 
   return (
-    <PanelSection title="Mapping">
+    <PanelSection title={t(L.MAPPING)}>
       {mappingProfiles.map((profile) => (
         <PanelSectionRow key={profile.id}>
           <ToggleField
@@ -56,13 +58,13 @@ const MappingProfiles: FC = () => {
             Navigation.CloseSideMenus();
           }}
         >
-          Manage
+          {t(L.MANAGE)}
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ToggleField
-          label="Merge with base profile"
-          description={profileInfo.path || "No base profile detected"}
+          label={t(L.MERGE_WITH_BASE_PROFILE)}
+          description={profileInfo.path || t(L.NO_BASE_PROFILE)}
           checked={mergeBase}
           onChange={(checked) => {
             dispatch(controllerSlice.actions.setMergeBaseProfile(checked));

@@ -12,6 +12,8 @@ import {
   getPluginVersionNumSelector,
   getDeviceNameSelector,
 } from "../redux-modules/uiSlice";
+import { L } from "../i18n";
+import { t } from "i18next";
 
 const DescriptionField: FC<{ label: string; children: React.ReactNode }> = ({
   label,
@@ -39,15 +41,15 @@ const AboutPage: FC = () => {
     <DialogBody>
       <DialogControlsSection>
         <DescriptionField label="DeckyPlumber">
-          Decky Plugin for InputPlumber controller configuration.
+          {t(L.ABOUT_DESC)}
           <br />
-          <i>Change controller modes, manage input mapping profiles, and more.</i>
+          <i>{t(L.ABOUT_DETAIL)}</i>
         </DescriptionField>
-        <Field label="Plugin Version" focusable>
-          {version || "Unknown"}
+        <Field label={t(L.PLUGIN_VERSION)} focusable>
+          {version || t(L.UNKNOWN)}
         </Field>
         {deviceName && (
-          <Field label="Device" focusable>
+          <Field label={t(L.DEVICE)} focusable>
             {deviceName}
           </Field>
         )}
@@ -60,16 +62,16 @@ const AboutPage: FC = () => {
             );
           }}
         >
-          GitHub Repo
+          {t(L.GITHUB_REPO)}
         </Field>
       </DialogControlsSection>
 
       <DialogControlsSection>
-        <DialogControlsSectionHeader>Dependency</DialogControlsSectionHeader>
+        <DialogControlsSectionHeader>{t(L.DEPENDENCY)}</DialogControlsSectionHeader>
         <DescriptionField label="InputPlumber">
-          Open source input router and remapper daemon for Linux.
+          {t(L.INPUTPLUMBER_DESC)}
           <br />
-          <i>DeckyPlumber is powered by InputPlumber.</i>
+          <i>{t(L.POWERED_BY)}</i>
         </DescriptionField>
         <Field
           icon={<FiGithub style={{ display: "block" }} />}
@@ -80,7 +82,7 @@ const AboutPage: FC = () => {
             );
           }}
         >
-          GitHub Repo
+          {t(L.GITHUB_REPO)}
         </Field>
       </DialogControlsSection>
     </DialogBody>

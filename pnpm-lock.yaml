@@ -6,19 +6,22 @@ settings:
 
 dependencies:
   '@decky/api':
-    specifier: ^1.1.3
+    specifier: ^1.1.2
     version: 1.1.3
   '@decky/ui':
-    specifier: ^4.11.1
+    specifier: ^4.9.1
     version: 4.11.1
   '@reduxjs/toolkit':
     specifier: ^1.9.7
     version: 1.9.7(react-redux@8.1.3)
+  i18next:
+    specifier: ^25.8.18
+    version: 25.8.18(typescript@5.9.3)
   lodash:
-    specifier: ^4.17.23
+    specifier: ^4.17.21
     version: 4.17.23
   react-icons:
-    specifier: ^4.12.0
+    specifier: ^4.9.0
     version: 4.12.0
   react-redux:
     specifier: ^8.1.3
@@ -27,21 +30,21 @@ dependencies:
     specifier: ^4.2.1
     version: 4.2.1
   tslib:
-    specifier: ^2.8.1
+    specifier: ^2.6.3
     version: 2.8.1
 
 devDependencies:
   '@decky/rollup':
-    specifier: ^1.0.2
+    specifier: ^1.0.1
     version: 1.0.2
   '@rollup/plugin-commonjs':
-    specifier: ^26.0.3
+    specifier: ^26.0.1
     version: 26.0.3(rollup@4.59.0)
   '@rollup/plugin-json':
     specifier: ^6.1.0
     version: 6.1.0(rollup@4.59.0)
   '@rollup/plugin-node-resolve':
-    specifier: ^15.3.1
+    specifier: ^15.2.3
     version: 15.3.1(rollup@4.59.0)
   '@rollup/plugin-replace':
     specifier: ^5.0.7
@@ -50,7 +53,7 @@ devDependencies:
     specifier: ^11.1.6
     version: 11.1.6(rollup@4.59.0)(tslib@2.8.1)(typescript@5.9.3)
   '@types/lodash':
-    specifier: ^4.17.24
+    specifier: ^4.14.201
     version: 4.17.24
   '@types/react':
     specifier: 18.3.3
@@ -59,22 +62,22 @@ devDependencies:
     specifier: 18.3.0
     version: 18.3.0
   '@types/webpack':
-    specifier: ^5.28.5
+    specifier: ^5.28.0
     version: 5.28.5
   rollup:
-    specifier: ^4.59.0
+    specifier: ^4.18.1
     version: 4.59.0
   rollup-plugin-delete:
-    specifier: ^2.2.0
+    specifier: ^2.1.0
     version: 2.2.0(rollup@4.59.0)
   rollup-plugin-external-globals:
-    specifier: ^0.12.1
+    specifier: ^0.12.0
     version: 0.12.1(rollup@4.59.0)
   rollup-plugin-import-assets:
     specifier: ^1.1.1
     version: 1.1.1(rollup@4.59.0)
   typescript:
-    specifier: ^5.9.3
+    specifier: ^5.5.3
     version: 5.9.3
 
 packages:
@@ -84,6 +87,11 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
+    dev: false
+
+  /@babel/runtime@7.28.6:
+    resolution: {integrity: sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA==}
+    engines: {node: '>=6.9.0'}
     dev: false
 
   /@decky/api@1.1.3:
@@ -1081,6 +1089,18 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /i18next@25.8.18(typescript@5.9.3):
+    resolution: {integrity: sha512-lzY5X83BiL5AP77+9DydbrqkQHFN9hUzWGjqjLpPcp5ZOzuu1aSoKaU3xbBLSjWx9dAzW431y+d+aogxOZaKRA==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.28.6
+      typescript: 5.9.3
+    dev: false
+
   /ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1681,7 +1701,6 @@ packages:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /update-browserslist-db@1.0.11(browserslist@4.21.7):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}

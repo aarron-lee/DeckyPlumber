@@ -46,6 +46,7 @@
     "@decky/api": "^1.1.2",
     "@decky/ui": "^4.9.1",
     "@reduxjs/toolkit": "^1.9.7",
+    "i18next": "^25.8.18",
     "lodash": "^4.17.21",
     "react-icons": "^4.9.0",
     "react-redux": "^8.1.3",

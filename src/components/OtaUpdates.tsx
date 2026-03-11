@@ -7,6 +7,8 @@ import {
 } from "../redux-modules/uiSlice";
 import { ButtonItem, Field, Navigation, PanelSection, PanelSectionRow } from "@decky/ui";
 import { DECKY_PLUMBER_ROUTE } from "../consts";
+import { L } from "../i18n";
+import { t } from "i18next";
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");
@@ -24,26 +26,26 @@ const OtaUpdates = () => {
     fn();
   }, []);
 
-  let buttonText = `Update to ${latestVersionNum}`;
+  let buttonText = t(L.UPDATE_TO, { version: latestVersionNum });
 
   if (installedVersionNum === latestVersionNum && Boolean(latestVersionNum)) {
-    buttonText = "Reinstall Plugin";
+    buttonText = t(L.REINSTALL_PLUGIN);
   }
 
   return (
-    <PanelSection title="Updates">
+    <PanelSection title={t(L.UPDATES)}>
       <PanelSectionRow>
-        <Field label={"Installed Version"}>{installedVersionNum}</Field>
+        <Field label={t(L.INSTALLED_VERSION)}>{installedVersionNum}</Field>
       </PanelSectionRow>
 
       {Boolean(latestVersionNum) && (
         <PanelSectionRow>
-          <Field label={"Latest Version"}>{latestVersionNum}</Field>
+          <Field label={t(L.LATEST_VERSION)}>{latestVersionNum}</Field>
         </PanelSectionRow>
       )}
       {Boolean(deviceName) && (
         <PanelSectionRow>
-          <Field label={"Device Name"}>{deviceName}</Field>
+          <Field label={t(L.DEVICE_NAME)}>{deviceName}</Field>
         </PanelSectionRow>
       )}
       {Boolean(latestVersionNum) && (
@@ -56,7 +58,7 @@ const OtaUpdates = () => {
             }}
             layout={"below"}
           >
-            {isUpdating ? "Updating..." : buttonText}
+            {isUpdating ? t(L.UPDATING) : buttonText}
           </ButtonItem>
         </PanelSectionRow>
       )}
@@ -68,7 +70,7 @@ const OtaUpdates = () => {
             Navigation.CloseSideMenus();
           }}
         >
-          About
+          {t(L.ABOUT)}
         </ButtonItem>
       </PanelSectionRow>
     </PanelSection>

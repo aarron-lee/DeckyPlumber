@@ -12,6 +12,8 @@ import {
 import { FaPen, FaTrash } from "react-icons/fa";
 import EventSelector from "./EventSelector";
 import { CapabilityConfig, capabilityLabel, shortCapabilityLabel } from "./eventRegistry";
+import { L } from "../../i18n";
+import { t } from "i18next";
 
 export type ProfileMapping = {
   name: string;
@@ -73,24 +75,24 @@ const MappingEditModal: FC<Props> = ({ mapping, onSave, closeModal }) => {
 
   return (
     <ConfirmModal
-      strTitle={isNew ? "Add Mapping" : "Edit Mapping"}
+      strTitle={isNew ? t(L.ADD_MAPPING) : t(L.EDIT_MAPPING)}
       onOK={handleConfirm}
       onCancel={closeModal}
-      strOKButtonText="Save"
-      strCancelButtonText="Cancel"
+      strOKButtonText={t(L.SAVE)}
+      strCancelButtonText={t(L.CANCEL)}
     >
       <Focusable>
         <DialogControlsSection>
-          <DialogControlsSectionHeader>General</DialogControlsSectionHeader>
+          <DialogControlsSectionHeader>{t(L.GENERAL)}</DialogControlsSectionHeader>
           <TextField
-            label="Name"
+            label={t(L.NAME)}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </DialogControlsSection>
 
         <DialogControlsSection>
-          <DialogControlsSectionHeader>Source Event</DialogControlsSectionHeader>
+          <DialogControlsSectionHeader>{t(L.SOURCE_EVENT)}</DialogControlsSectionHeader>
           <EventSelector
             value={sourceEvent}
             onChange={setSourceEvent}
@@ -99,13 +101,13 @@ const MappingEditModal: FC<Props> = ({ mapping, onSave, closeModal }) => {
 
         <DialogControlsSection>
           <DialogControlsSectionHeader>
-            Target Events ({targetEvents.length})
+            {t(L.TARGET_EVENTS, { count: targetEvents.length })}
           </DialogControlsSectionHeader>
 
           {targetEvents.map((te, idx) => (
             <div key={idx}>
               <Field
-                label={`Target ${idx + 1}`}
+                label={t(L.TARGET_N, { n: idx + 1 })}
                 description={shortCapabilityLabel(te)}
               >
                 <Focusable style={{ display: "flex", gap: "8px" }}>
@@ -142,7 +144,7 @@ const MappingEditModal: FC<Props> = ({ mapping, onSave, closeModal }) => {
           ))}
 
           <ButtonItem layout="below" onClick={addTarget}>
-            Add Target
+            {t(L.ADD_TARGET)}
           </ButtonItem>
         </DialogControlsSection>
       </Focusable>

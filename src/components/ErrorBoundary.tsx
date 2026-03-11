@@ -1,6 +1,8 @@
 //@ts-nocheck
 import { Field } from "@decky/ui";
 import { Component } from "react";
+import { L } from "../i18n";
+import { t } from "i18next";
 
 type PropsType = {
   children: any;
@@ -28,8 +30,8 @@ class ErrorBoundary extends Component<PropsType, StateType> {
   render() {
     if (this.state.hasError) {
       return (
-        <Field disabled label="Error">
-          Error while trying to render {this.props.title}
+        <Field disabled label={t(L.ERROR)}>
+          {t(L.ERROR_RENDER, { title: this.props.title })}
         </Field>
       );
     }

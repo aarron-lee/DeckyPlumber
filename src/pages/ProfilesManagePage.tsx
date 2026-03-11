@@ -28,7 +28,9 @@ import { store } from "../redux-modules/store";
 import MappingEditModal, {
   ProfileMapping,
 } from "../components/profile-editor/MappingEditModal";
-import { capabilityLabel, mappingDescription } from "../components/profile-editor/eventRegistry";
+import { mappingDescription } from "../components/profile-editor/eventRegistry";
+import { L } from "../i18n";
+import { t } from "i18next";
 
 const MenuButton: FC<{ onClick: (e: MouseEvent) => void }> = ({ onClick }) => (
   <DialogButton
@@ -84,7 +86,7 @@ const ProfileEditModal: FC<{
 
   const handleSave = async () => {
     await updateCustomProfile(profileId, {
-      name: name.trim() || "Untitled",
+      name: name.trim() || t(L.UNTITLED),
       description,
       mapping: mappings,
     });
@@ -116,13 +118,13 @@ const ProfileEditModal: FC<{
     showContextMenu(
       <Menu label={mappings[index]?.name ?? "Mapping"}>
         <MenuItem onClick={() => openEditMapping(index)}>
-          Edit
+          {t(L.EDIT)}
         </MenuItem>
         <MenuItem
           tone="destructive"
           onClick={() => setMappings((prev) => prev.filter((_, i) => i !== index))}
         >
-          Delete
+          {t(L.DELETE)}
         </MenuItem>
       </Menu>,
       e?.currentTarget ?? window,
@@ -132,36 +134,36 @@ const ProfileEditModal: FC<{
   if (!loaded) {
     return (
       <ConfirmModal
-        strTitle="Loading..."
+        strTitle={t(L.LOADING)}
         onOK={() => {}}
         onCancel={closeModal}
-        strOKButtonText="OK"
-        strCancelButtonText="Cancel"
+        strOKButtonText={t(L.OK)}
+        strCancelButtonText={t(L.CANCEL)}
       />
     );
   }
 
   return (
     <ConfirmModal
-      strTitle={`Edit: ${name || "Untitled"}`}
+      strTitle={`${t(L.EDIT)}: ${name || t(L.UNTITLED)}`}
       onOK={handleSave}
       onCancel={closeModal}
-      strOKButtonText="Save"
-      strCancelButtonText="Cancel"
+      strOKButtonText={t(L.SAVE)}
+      strCancelButtonText={t(L.CANCEL)}
     >
       <Focusable>
         <TextField
-          label="Name"
+          label={t(L.NAME)}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
-          label="Description"
+          label={t(L.DESCRIPTION)}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <Field label={`Mappings (${mappings.length})`} />
+        <Field label={t(L.MAPPINGS_COUNT, { count: mappings.length })} />
 
         {mappings.map((m, idx) => (
           <Field
@@ -176,7 +178,7 @@ const ProfileEditModal: FC<{
         ))}
 
         <ButtonItem layout="below" onClick={openAddMapping}>
-          Add Mapping
+          {t(L.ADD_MAPPING)}
         </ButtonItem>
       </Focusable>
     </ConfirmModal>
@@ -218,22 +220,22 @@ const ProfilesManagePage: FC = () => {
     showContextMenu(
       <Menu label={profile.name}>
         <MenuItem onClick={() => openEditModal(profile.id)}>
-          Edit
+          {t(L.EDIT)}
         </MenuItem>
         <MenuItem onClick={() => {
           duplicateProfile(profile.id, `${profile.name} (Copy)`).then(reload);
         }}>
-          Duplicate
+          {t(L.DUPLICATE)}
         </MenuItem>
         <MenuItem
           tone="destructive"
           onClick={() => {
             showModal(
               <ConfirmModal
-                strTitle="Delete Profile"
-                strDescription={`Delete "${profile.name}"? This cannot be undone.`}
-                strOKButtonText="Delete"
-                strCancelButtonText="Cancel"
+                strTitle={t(L.DELETE_PROFILE)}
+                strDescription={t(L.DELETE_CONFIRM, { name: profile.name })}
+                strOKButtonText={t(L.DELETE)}
+                strCancelButtonText={t(L.CANCEL)}
                 onOK={async () => {
                   await deleteCustomProfile(profile.id);
                   await reload();
@@ -242,7 +244,7 @@ const ProfilesManagePage: FC = () => {
             );
           }}
         >
-          Delete
+          {t(L.DELETE)}
         </MenuItem>
       </Menu>,
       e?.currentTarget ?? window,
@@ -255,7 +257,7 @@ const ProfilesManagePage: FC = () => {
         <MenuItem onClick={() => {
           duplicateProfile(profile.id, `${profile.name} (Copy)`).then(reload);
         }}>
-          Copy to Custom
+          {t(L.COPY_TO_CUSTOM)}
         </MenuItem>
       </Menu>,
       e?.currentTarget ?? window,
@@ -264,7 +266,7 @@ const ProfilesManagePage: FC = () => {
 
   const handleCreate = useCallback(async () => {
     const result = await createCustomProfile({
-      name: "New Profile",
+      name: t(L.NEW_PROFILE),
       description: "",
       mapping: [],
     });
@@ -275,21 +277,21 @@ const ProfilesManagePage: FC = () => {
   }, [openEditModal, reload]);
 
   if (loading) {
-    return <DialogBody><Field label="Loading..." /></DialogBody>;
+    return <DialogBody><Field label={t(L.LOADING)} /></DialogBody>;
   }
 
   return (
     <DialogBody>
       <DialogControlsSection>
-        <DialogControlsSectionHeader>Custom Profiles</DialogControlsSectionHeader>
+        <DialogControlsSectionHeader>{t(L.CUSTOM_PROFILES)}</DialogControlsSectionHeader>
         {customProfiles.length === 0 ? (
-          <Field label="No custom profiles yet." />
+          <Field label={t(L.NO_CUSTOM_PROFILES)} />
         ) : (
           customProfiles.map((p) => (
             <Field
               key={p.id}
               label={p.name}
-              description={p.description || "No description"}
+              description={p.description || t(L.NO_DESCRIPTION)}
             >
               <Focusable style={{ display: "flex" }}>
                 <MenuButton onClick={(e) => showCustomProfileMenu(p, e)} />
@@ -301,12 +303,12 @@ const ProfilesManagePage: FC = () => {
 
       {presetProfiles.length > 0 && (
         <DialogControlsSection>
-          <DialogControlsSectionHeader>Preset Profiles</DialogControlsSectionHeader>
+          <DialogControlsSectionHeader>{t(L.PRESET_PROFILES)}</DialogControlsSectionHeader>
           {presetProfiles.map((p) => (
             <Field
               key={p.id}
               label={p.name}
-              description={p.description || "Built-in preset"}
+              description={p.description || t(L.BUILT_IN_PRESET)}
             >
               <Focusable style={{ display: "flex" }}>
                 <MenuButton onClick={(e) => showPresetProfileMenu(p, e)} />
@@ -317,9 +319,9 @@ const ProfilesManagePage: FC = () => {
       )}
 
       <DialogControlsSection>
-        <DialogControlsSectionHeader>Actions</DialogControlsSectionHeader>
+        <DialogControlsSectionHeader>{t(L.ACTIONS)}</DialogControlsSectionHeader>
         <ButtonItem layout="below" onClick={handleCreate}>
-          New Profile
+          {t(L.NEW_PROFILE)}
         </ButtonItem>
       </DialogControlsSection>
     </DialogBody>
