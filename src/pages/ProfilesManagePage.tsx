@@ -22,8 +22,10 @@ import {
   updateCustomProfile,
   deleteCustomProfile,
   duplicateProfile,
+  syncControllerSettings,
+  extractCurrentGameId,
 } from "../backend/utils";
-import { controllerSlice, MappingProfileInfo } from "../redux-modules/controllerSlice";
+import { controllerSlice, MappingProfileInfo, selectActiveProfiles, selectPerGameProfilesEnabled } from "../redux-modules/controllerSlice";
 import { store } from "../redux-modules/store";
 import MappingEditModal, {
   ProfileMapping,
@@ -59,6 +61,15 @@ const refreshGlobalProfiles = async () => {
   }
 };
 
+const syncIfActive = (profileId: string) => {
+  const state = store.getState();
+  const active = selectActiveProfiles(state);
+  if (active.includes(profileId)) {
+    const perGame = selectPerGameProfilesEnabled(state);
+    syncControllerSettings(perGame ? extractCurrentGameId() : "default");
+  }
+};
+
 // -----------------------------------------------------------------------
 // Profile Edit Modal
 // -----------------------------------------------------------------------
@@ -91,6 +102,7 @@ const ProfileEditModal: FC<{
       mapping: mappings,
     });
     await refreshGlobalProfiles();
+    syncIfActive(profileId);
     onDone();
     closeModal?.();
   };
@@ -237,7 +249,11 @@ const ProfilesManagePage: FC = () => {
                 strOKButtonText={t(L.DELETE)}
                 strCancelButtonText={t(L.CANCEL)}
                 onOK={async () => {
+                  const wasActive = selectActiveProfiles(store.getState()).includes(profile.id);
                   await deleteCustomProfile(profile.id);
+                  if (wasActive) {
+                    store.dispatch(controllerSlice.actions.toggleMappingProfile({ profileId: profile.id, enabled: false }));
+                  }
                   await reload();
                 }}
               />
