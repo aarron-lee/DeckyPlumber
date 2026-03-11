@@ -13,6 +13,7 @@ const MODE_OPTIONS = [
   { data: ControllerModes.DUAL_SENSE_EDGE, label: "DualSense Edge" },
   { data: ControllerModes.HORI_STEAM, label: "Hori Steam" },
   { data: ControllerModes.STEAM_DECK, label: "Steam Deck" },
+  { data: ControllerModes.BITDO_ULTIMATE_2, label: "8BitDo Ultimate 2" },
 ];
 
 const ControllerModeDropdown: FC = () => {
