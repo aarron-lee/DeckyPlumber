@@ -2,6 +2,8 @@ import { FC } from "react";
 import { DropdownItem } from "@decky/ui";
 import { useControllerMode } from "../../hooks/controller";
 import { ControllerModes } from "../../backend/constants";
+import { L } from "../../i18n";
+import { t } from "i18next";
 
 const MODE_OPTIONS = [
   { data: ControllerModes.DEFAULT, label: "Default" },
@@ -18,7 +20,7 @@ const ControllerModeDropdown: FC = () => {
 
   return (
     <DropdownItem
-      label="Controller Mode"
+      label={t(L.CONTROLLER_MODE)}
       selectedOption={mode}
       rgOptions={MODE_OPTIONS}
       onChange={(option) => setMode(option.data)}
