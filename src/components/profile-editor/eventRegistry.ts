@@ -39,11 +39,11 @@ export type EventRegistry = Record<string, EventCategory>;
 // Human-friendly aliases for raw capability values.
 // Format in dropdowns: "A (South)", in short labels: "A"
 export const VALUE_ALIASES: Record<string, string> = {
-  // Face buttons (Xbox layout, matches Steam Deck labels)
+  // Face buttons — BTN_NORTH=BTN_X, BTN_WEST=BTN_Y in the kernel
   South: "A",
   East: "B",
-  North: "Y",
-  West: "X",
+  North: "X",
+  West: "Y",
   // Shoulders & triggers
   LeftBumper: "LB",
   RightBumper: "RB",
