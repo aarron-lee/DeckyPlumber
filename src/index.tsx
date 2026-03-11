@@ -1,7 +1,8 @@
-import { definePlugin, staticClasses } from "@decky/ui";
+import { definePlugin, staticClasses, SidebarNavigation } from "@decky/ui";
+import { routerHook } from "@decky/api";
 import { FC, memo } from "react";
 import ControllerPanel from "./components/controller/ControllerPanel";
-import { getSettings, logInfo } from "./backend/utils";
+import { getSettings } from "./backend/utils";
 import { store } from "./redux-modules/store";
 import { getInitialLoading } from "./redux-modules/uiSlice";
 import { setInitialState } from "./redux-modules/extraActions";
@@ -13,6 +14,9 @@ import OtaUpdates from "./components/OtaUpdates";
 import MappingProfiles from "./components/controller/MappingProfiles";
 import { suspendResumeListeners } from "./redux-modules/steamListeners";
 import Options from "./components/controller/Options";
+import ProfilesManagePage from "./pages/ProfilesManagePage";
+import AboutPage from "./pages/AboutPage";
+import { DECKY_PLUMBER_ROUTE } from "./consts";
 
 const Content: FC = memo(() => {
   const loading = useSelector(getInitialLoading);
@@ -24,7 +28,7 @@ const Content: FC = memo(() => {
       <ErrorBoundary title={"Controller Mode"}>
         <ControllerPanel />
       </ErrorBoundary>
-      <ErrorBoundary title={"Mapping Profiles"}>
+      <ErrorBoundary title={"Mapping"}>
         <MappingProfiles />
       </ErrorBoundary>
       <ErrorBoundary title={"Options"}>
@@ -45,6 +49,29 @@ const AppContainer: FC = () => {
   );
 };
 
+const DeckyPlumberRouter: FC = () => {
+  return (
+    <Provider store={store}>
+      <SidebarNavigation
+        title="DeckyPlumber"
+        showTitle
+        pages={[
+          {
+            title: "Mapping Profiles",
+            content: <ProfilesManagePage />,
+            route: `${DECKY_PLUMBER_ROUTE}/profiles`,
+          },
+          {
+            title: "About",
+            content: <AboutPage />,
+            route: `${DECKY_PLUMBER_ROUTE}/about`,
+          },
+        ]}
+      />
+    </Provider>
+  );
+};
+
 export default definePlugin(() => {
   getSettings().then((result) => {
     const results = result || {};
@@ -56,6 +83,8 @@ export default definePlugin(() => {
 
   const unsubscribeSuspendListeners = suspendResumeListeners();
 
+  routerHook.addRoute(DECKY_PLUMBER_ROUTE, DeckyPlumberRouter);
+
   return {
     title: <div className={staticClasses.Title}>DeckyPlumber</div>,
     content: <AppContainer />,
@@ -63,6 +92,7 @@ export default definePlugin(() => {
     onDismount() {
       clearListener();
       unsubscribeSuspendListeners();
+      routerHook.removeRoute(DECKY_PLUMBER_ROUTE);
     },
   };
 });

@@ -21,6 +21,7 @@ export type MappingProfileInfo = {
   id: string;
   name: string;
   description?: string;
+  isPreset: boolean;
 };
 
 type ControllerProfile = {
@@ -36,12 +37,19 @@ type ControllerProfiles = {
   [gameId: string]: ControllerProfile;
 };
 
+export type CurrentProfileInfo = {
+  path: string;
+  name: string;
+};
+
 type ControllerState = {
   controllerProfiles: ControllerProfiles;
   perGameProfilesEnabled: boolean;
   advancedOptions: AdvancedOption[];
   advanced: { [optionName: string]: any };
   mappingProfiles: MappingProfileInfo[];
+  mergeBaseProfile: boolean;
+  currentProfileInfo: CurrentProfileInfo;
 };
 
 const initialState: ControllerState = {
@@ -50,6 +58,8 @@ const initialState: ControllerState = {
   advanced: {},
   advancedOptions: [],
   mappingProfiles: [],
+  mergeBaseProfile: true,
+  currentProfileInfo: { path: "", name: "" },
 };
 
 const bootstrapControllerProfile = (
@@ -150,6 +160,18 @@ export const controllerSlice = createSlice({
 
       set(state, `advanced.${statePath}`, value);
     },
+    setMappingProfiles: (
+      state,
+      action: PayloadAction<MappingProfileInfo[]>
+    ) => {
+      state.mappingProfiles = action.payload;
+    },
+    setMergeBaseProfile: (state, action: PayloadAction<boolean>) => {
+      state.mergeBaseProfile = action.payload;
+    },
+    setCurrentProfileInfo: (state, action: PayloadAction<CurrentProfileInfo>) => {
+      state.currentProfileInfo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(setInitialState, (state, action) => {
@@ -158,7 +180,7 @@ export const controllerSlice = createSlice({
       const perGameProfilesEnabled = Boolean(
         action.payload.perGameProfilesEnabled
       );
-      const { advancedOptions, mappingProfiles } = action.payload;
+      const { advancedOptions, mappingProfiles, currentProfileInfo, mergeBaseProfile } = action.payload;
 
       if (advancedOptions) {
         state.advancedOptions = advancedOptions;
@@ -168,6 +190,12 @@ export const controllerSlice = createSlice({
       }
       if (mappingProfiles) {
         state.mappingProfiles = mappingProfiles;
+      }
+      if (currentProfileInfo) {
+        state.currentProfileInfo = currentProfileInfo;
+      }
+      if (mergeBaseProfile !== undefined) {
+        state.mergeBaseProfile = mergeBaseProfile;
       }
       state.controllerProfiles = controllerProfiles;
       state.perGameProfilesEnabled = perGameProfilesEnabled;
@@ -266,6 +294,12 @@ export const selectActiveProfiles = (state: RootState): string[] => {
     : "default";
   return state.controller.controllerProfiles[key]?.activeProfiles || [];
 };
+
+export const selectMergeBaseProfile = (state: RootState): boolean =>
+  state.controller.mergeBaseProfile;
+
+export const selectCurrentProfileInfo = (state: RootState): CurrentProfileInfo =>
+  state.controller.currentProfileInfo;
 
 // -------------
 // Slice Util functions

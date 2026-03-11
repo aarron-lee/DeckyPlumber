@@ -18,6 +18,7 @@ const mutatingActionTypes = [
   controllerSlice.actions.setPerGameProfilesEnabled.type,
   controllerSlice.actions.setControllerMode.type,
   controllerSlice.actions.toggleMappingProfile.type,
+  controllerSlice.actions.setMergeBaseProfile.type,
   setCurrentGameId.type,
 ];
 
@@ -72,6 +73,20 @@ export const saveControllerSettingsMiddleware =
       } else {
         syncControllerSettings("default");
       }
+    }
+
+    if (action.type === controllerSlice.actions.setMergeBaseProfile.type) {
+      setSetting({
+        name: "mergeBaseProfile",
+        value: Boolean(action.payload),
+      });
+      const {
+        controller: { perGameProfilesEnabled },
+      } = state;
+      const currentGameId = perGameProfilesEnabled
+        ? extractCurrentGameId()
+        : "default";
+      syncControllerSettings(currentGameId);
     }
 
     if (action.type === controllerSlice.actions.updateAdvancedOption.type) {

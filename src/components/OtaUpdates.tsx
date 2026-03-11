@@ -5,7 +5,8 @@ import {
   getDeviceNameSelector,
   getPluginVersionNumSelector,
 } from "../redux-modules/uiSlice";
-import { ButtonItem, Field, PanelSection, PanelSectionRow } from "@decky/ui";
+import { ButtonItem, Field, Navigation, PanelSection, PanelSectionRow } from "@decky/ui";
+import { DECKY_PLUMBER_ROUTE } from "../consts";
 
 const OtaUpdates = () => {
   const [latestVersionNum, setLatestVersionNum] = useState("");
@@ -59,6 +60,17 @@ const OtaUpdates = () => {
           </ButtonItem>
         </PanelSectionRow>
       )}
+      <PanelSectionRow>
+        <ButtonItem
+          layout="below"
+          onClick={() => {
+            Navigation.Navigate(`${DECKY_PLUMBER_ROUTE}/about`);
+            Navigation.CloseSideMenus();
+          }}
+        >
+          About
+        </ButtonItem>
+      </PanelSectionRow>
     </PanelSection>
   );
 };
