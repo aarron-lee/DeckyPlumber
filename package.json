@@ -1,6 +1,6 @@
 {
   "name": "decky-plumber",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "InputPlumber Decky Plugin",
   "type": "module",
   "scripts": {
