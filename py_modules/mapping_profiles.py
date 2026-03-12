@@ -397,19 +397,57 @@ def build_combined_yaml(active_profile_ids, merge_base=False):
     )
 
 
+def _load_profile_yaml(profile_yaml):
+    """Send a profile YAML string to InputPlumber via DBus."""
+    cmd = [
+        "busctl", "call",
+        _BUSCTL_DEST, _BUSCTL_PATH, _BUSCTL_IFACE,
+        "LoadProfileFromYaml",
+        "s", profile_yaml,
+    ]
+    subprocess.run(
+        cmd,
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=_get_env(),
+    )
+
+
+def _restore_base_profile():
+    """Reload the base profile to undo any custom LoadProfileFromYaml."""
+    info = get_base_profile_info()
+    path = info.get("path", "")
+    if not path or not os.path.isfile(path):
+        decky_plugin.logger.warning(
+            f"[apply] Cannot restore base profile — file not found: {path!r}"
+        )
+        return
+
+    try:
+        with open(path, "r") as f:
+            base_yaml = f.read()
+        decky_plugin.logger.debug(f"[apply] Restoring base profile from {path}")
+        _load_profile_yaml(base_yaml)
+    except Exception as e:
+        decky_plugin.logger.error(f"Failed to restore base profile: {e}", exc_info=True)
+
+
 def apply_mapping_profiles(active_profile_ids, merge_base=False):
     """Build combined YAML and apply via DBus LoadProfileFromYaml.
 
-    Does nothing when no profiles are active, so InputPlumber keeps its
-    current configuration untouched.
+    When no profiles are active, restores the base profile so that
+    InputPlumber returns to its default configuration.
     """
     decky_plugin.logger.debug(
         f"[apply] called with ids={active_profile_ids!r}, merge_base={merge_base}"
     )
     if not active_profile_ids:
         decky_plugin.logger.debug(
-            "[apply] No active mapping profiles — skipping LoadProfileFromYaml"
+            "[apply] No active mapping profiles — restoring base profile"
         )
+        _restore_base_profile()
         return
 
     try:
@@ -422,20 +460,7 @@ def apply_mapping_profiles(active_profile_ids, merge_base=False):
                 f"[apply] YAML to send:\n{profile_yaml}"
             )
 
-            cmd = [
-                "busctl", "call",
-                _BUSCTL_DEST, _BUSCTL_PATH, _BUSCTL_IFACE,
-                "LoadProfileFromYaml",
-                "s", profile_yaml,
-            ]
-            subprocess.run(
-                cmd,
-                check=True,
-                text=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                env=_get_env(),
-            )
+            _load_profile_yaml(profile_yaml)
     except Exception as e:
         decky_plugin.logger.error(
             f"Error applying mapping profiles: {e}",
