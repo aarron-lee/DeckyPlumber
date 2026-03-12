@@ -12,6 +12,7 @@ CUSTOM_PROFILES_DIR = os.path.join(
 )
 
 _preset_profiles_cache = None
+_PROFILE_ID_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 
 
 def _get_env():
@@ -45,6 +46,19 @@ def _unique_id(base_id):
     while f"{base_id}_{counter}" in all_ids:
         counter += 1
     return f"{base_id}_{counter}"
+
+
+def _custom_profile_path(profile_id):
+    """Resolve and validate a custom profile file path."""
+    if not isinstance(profile_id, str) or not _PROFILE_ID_RE.match(profile_id):
+        raise ValueError("Invalid profile id")
+
+    _ensure_custom_dir()
+    base_dir = os.path.realpath(CUSTOM_PROFILES_DIR)
+    filepath = os.path.realpath(os.path.join(base_dir, f"{profile_id}.yaml"))
+    if not filepath.startswith(base_dir + os.sep):
+        raise ValueError("Invalid profile path")
+    return filepath
 
 
 # ---------------------------------------------------------------------------
@@ -206,8 +220,7 @@ def create_custom_profile(data):
 
 def update_custom_profile(profile_id, data):
     """Update an existing custom profile."""
-    _ensure_custom_dir()
-    filepath = os.path.join(CUSTOM_PROFILES_DIR, f"{profile_id}.yaml")
+    filepath = _custom_profile_path(profile_id)
     if not os.path.isfile(filepath):
         raise FileNotFoundError(f"Custom profile '{profile_id}' not found")
 
@@ -234,8 +247,7 @@ def update_custom_profile(profile_id, data):
 
 def delete_custom_profile(profile_id):
     """Delete a custom profile by ID."""
-    _ensure_custom_dir()
-    filepath = os.path.join(CUSTOM_PROFILES_DIR, f"{profile_id}.yaml")
+    filepath = _custom_profile_path(profile_id)
     if not os.path.isfile(filepath):
         raise FileNotFoundError(f"Custom profile '{profile_id}' not found")
     os.remove(filepath)
