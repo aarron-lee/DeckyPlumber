@@ -17,8 +17,16 @@ export type AdvancedOption = {
   disabled?: { [k: string]: any };
 };
 
+export type MappingProfileInfo = {
+  id: string;
+  name: string;
+  description?: string;
+  isPreset: boolean;
+};
+
 type ControllerProfile = {
   mode: ControllerModes;
+  activeProfiles?: string[];
 };
 
 const DEFAULT_CONTROLLER_PROFILE = {
@@ -29,11 +37,19 @@ type ControllerProfiles = {
   [gameId: string]: ControllerProfile;
 };
 
+export type CurrentProfileInfo = {
+  path: string;
+  name: string;
+};
+
 type ControllerState = {
   controllerProfiles: ControllerProfiles;
   perGameProfilesEnabled: boolean;
   advancedOptions: AdvancedOption[];
   advanced: { [optionName: string]: any };
+  mappingProfiles: MappingProfileInfo[];
+  mergeBaseProfile: boolean;
+  currentProfileInfo: CurrentProfileInfo;
 };
 
 const initialState: ControllerState = {
@@ -41,6 +57,9 @@ const initialState: ControllerState = {
   perGameProfilesEnabled: false,
   advanced: {},
   advancedOptions: [],
+  mappingProfiles: [],
+  mergeBaseProfile: true,
+  currentProfileInfo: { path: "", name: "" },
 };
 
 const bootstrapControllerProfile = (
@@ -109,6 +128,30 @@ export const controllerSlice = createSlice({
         value: enabled,
       });
     },
+    toggleMappingProfile: (
+      state,
+      action: PayloadAction<{ profileId: string; enabled: boolean }>
+    ) => {
+      const { profileId, enabled } = action.payload;
+      const currentGameId = extractCurrentGameId();
+      const key = state.perGameProfilesEnabled ? currentGameId : "default";
+      const profile = state.controllerProfiles[key];
+
+      if (!profile) return;
+
+      if (!profile.activeProfiles) {
+        profile.activeProfiles = [];
+      }
+      if (enabled) {
+        if (!profile.activeProfiles.includes(profileId)) {
+          profile.activeProfiles.push(profileId);
+        }
+      } else {
+        profile.activeProfiles = profile.activeProfiles.filter(
+          (id) => id !== profileId
+        );
+      }
+    },
     updateAdvancedOption: (
       state,
       action: PayloadAction<{ statePath: string; value: any }>
@@ -116,6 +159,18 @@ export const controllerSlice = createSlice({
       const { statePath, value } = action.payload;
 
       set(state, `advanced.${statePath}`, value);
+    },
+    setMappingProfiles: (
+      state,
+      action: PayloadAction<MappingProfileInfo[]>
+    ) => {
+      state.mappingProfiles = action.payload;
+    },
+    setMergeBaseProfile: (state, action: PayloadAction<boolean>) => {
+      state.mergeBaseProfile = action.payload;
+    },
+    setCurrentProfileInfo: (state, action: PayloadAction<CurrentProfileInfo>) => {
+      state.currentProfileInfo = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -125,13 +180,22 @@ export const controllerSlice = createSlice({
       const perGameProfilesEnabled = Boolean(
         action.payload.perGameProfilesEnabled
       );
-      const { advancedOptions } = action.payload;
+      const { advancedOptions, mappingProfiles, currentProfileInfo, mergeBaseProfile } = action.payload;
 
       if (advancedOptions) {
         state.advancedOptions = advancedOptions;
         advancedOptions.forEach((option: AdvancedOption) => {
           set(state, `advanced.${option.statePath}`, option.currentValue);
         });
+      }
+      if (mappingProfiles) {
+        state.mappingProfiles = mappingProfiles;
+      }
+      if (currentProfileInfo) {
+        state.currentProfileInfo = currentProfileInfo;
+      }
+      if (mergeBaseProfile !== undefined) {
+        state.mergeBaseProfile = mergeBaseProfile;
       }
       state.controllerProfiles = controllerProfiles;
       state.perGameProfilesEnabled = perGameProfilesEnabled;
@@ -219,6 +283,23 @@ export const selectAlwaysDefaultOption = (state: RootState) => {
   );
   return defaultOption;
 };
+
+export const selectMappingProfiles = (state: RootState): MappingProfileInfo[] =>
+  state.controller.mappingProfiles;
+
+export const selectActiveProfiles = (state: RootState): string[] => {
+  const currentGameId = extractCurrentGameId();
+  const key = state.controller.perGameProfilesEnabled
+    ? currentGameId
+    : "default";
+  return state.controller.controllerProfiles[key]?.activeProfiles || [];
+};
+
+export const selectMergeBaseProfile = (state: RootState): boolean =>
+  state.controller.mergeBaseProfile;
+
+export const selectCurrentProfileInfo = (state: RootState): CurrentProfileInfo =>
+  state.controller.currentProfileInfo;
 
 // -------------
 // Slice Util functions

@@ -7,6 +7,8 @@ import {
 import { get } from "lodash";
 import ErrorBoundary from "../ErrorBoundary";
 import { PanelSection, PanelSectionRow, ToggleField } from "@decky/ui";
+import { L } from "../../i18n";
+import { t } from "i18next";
 PanelSectionRow;
 
 const Options = () => {
@@ -20,8 +22,8 @@ const Options = () => {
   }
 
   return (
-    <PanelSection title="Options">
-      <ErrorBoundary title="Options">
+    <PanelSection title={t(L.OPTIONS)}>
+      <ErrorBoundary title={t(L.OPTIONS)}>
         {advancedOptions.map((option, idx) => {
           const { name, type, statePath, defaultValue, description } = option;
           const value = get(advancedState, statePath, defaultValue);

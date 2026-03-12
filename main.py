@@ -6,6 +6,7 @@ import advanced_options
 import file_timeout
 import plugin_update
 import plugin_settings
+import mapping_profiles
 import migrations
 from plugin_enums import ControllerModes
 
@@ -13,6 +14,11 @@ class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):
         decky_plugin.logger.info("Hello World!")
+        controller_utils.clear_state_file()
+        try:
+            mapping_profiles.capture_base_profile()
+        except Exception as e:
+            decky_plugin.logger.error(f"Failed to capture base profile: {e}")
 
     async def get_settings(self):
         results = plugin_settings.get_settings()
@@ -20,9 +26,9 @@ class Plugin:
         try:
             results['pluginVersionNum'] = f'{decky_plugin.DECKY_PLUGIN_VERSION}'
             results['advancedOptions'] = advanced_options.get_options()
-
-
+            results['mappingProfiles'] = mapping_profiles.get_all_profiles()
             results['deviceName'] = device.get_device_name()
+            results['currentProfileInfo'] = mapping_profiles.get_base_profile_info()
         except Exception as e:
             decky_plugin.logger.error(e)
 
@@ -49,6 +55,46 @@ class Plugin:
         if currentGameId:
             controller_utils.sync_controller_settings(currentGameId)
         return result
+
+    # ----- Mapping Profile CRUD -----
+
+    async def get_profile_detail(self, profile_id: str):
+        try:
+            return mapping_profiles.get_profile_detail(profile_id)
+        except Exception as e:
+            decky_plugin.logger.error(f"get_profile_detail error: {e}")
+            return None
+
+    async def create_custom_profile(self, data: dict):
+        try:
+            return mapping_profiles.create_custom_profile(data)
+        except Exception as e:
+            decky_plugin.logger.error(f"create_custom_profile error: {e}")
+            return {"error": str(e)}
+
+    async def update_custom_profile(self, profile_id: str, data: dict):
+        try:
+            return mapping_profiles.update_custom_profile(profile_id, data)
+        except Exception as e:
+            decky_plugin.logger.error(f"update_custom_profile error: {e}")
+            return {"error": str(e)}
+
+    async def delete_custom_profile(self, profile_id: str):
+        try:
+            mapping_profiles.delete_custom_profile(profile_id)
+            return {"success": True}
+        except Exception as e:
+            decky_plugin.logger.error(f"delete_custom_profile error: {e}")
+            return {"error": str(e)}
+
+    async def duplicate_profile(self, source_id: str, new_name: str):
+        try:
+            return mapping_profiles.duplicate_profile(source_id, new_name)
+        except Exception as e:
+            decky_plugin.logger.error(f"duplicate_profile error: {e}")
+            return {"error": str(e)}
+
+    # ----- End Mapping Profile CRUD -----
 
     async def on_suspend(self, currentGameId):
         decky_plugin.logger.info(f"on_suspend called with {currentGameId}")

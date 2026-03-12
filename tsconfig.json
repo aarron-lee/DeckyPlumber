@@ -17,6 +17,7 @@
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true
   },
   "include": ["src"],

@@ -1,0 +1,33 @@
+version: 1
+kind: DeviceProfile
+name: Swap Menu Buttons
+description: Swap Select/Guide and Start/QuickAccess buttons
+mapping:
+  - name: Select to Guide
+    source_event:
+      gamepad:
+        button: Select
+    target_events:
+      - gamepad:
+          button: Guide
+  - name: Guide to Select
+    source_event:
+      gamepad:
+        button: Guide
+    target_events:
+      - gamepad:
+          button: Select
+  - name: Start to QuickAccess
+    source_event:
+      gamepad:
+        button: Start
+    target_events:
+      - gamepad:
+          button: QuickAccess
+  - name: QuickAccess to Start
+    source_event:
+      gamepad:
+        button: QuickAccess
+    target_events:
+      - gamepad:
+          button: Start
