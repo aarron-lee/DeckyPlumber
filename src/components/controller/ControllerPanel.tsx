@@ -16,7 +16,7 @@ const ControllerPanel: VFC = () => {
 
   return (
     <PanelSection title={title}>
-      <PerGameProfilesToggle />
+      <PerGameProfilesToggle displayName={displayName} />
       <ControllerSettings />
     </PanelSection>
   );
