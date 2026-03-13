@@ -4,7 +4,9 @@
 
 Decky Plugin for changing InputPlumber controller mode
 
-![plugin image](./img/decky_plumber.png)
+![image 1, thanks to honjow](./img/1.jpg)
+![image 2 thanks to honjow](./img/2.jpg)
+![image 3, thanks to honjow](./img/3.jpg)
 
 # Prerequisites
 
