@@ -1,0 +1,15 @@
+version: 1
+kind: DeviceProfile
+name: Swap Volume
+description: Swap Volume Up and Volume Down buttons
+mapping:
+  - name: Volume up to down
+    source_event:
+      keyboard: KeyVolumeUp
+    target_events:
+      - keyboard: KeyVolumeDown
+  - name: Volume down to up
+    source_event:
+      keyboard: KeyVolumeDown
+    target_events:
+      - keyboard: KeyVolumeUp
