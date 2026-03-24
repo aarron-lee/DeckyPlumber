@@ -1,7 +1,7 @@
 version: 1
 kind: DeviceProfile
-name: Swap Volume
-description: Swap Volume Up and Volume Down buttons
+name: Swap Volume (experimental)
+description: (experimental) Swap Volume Up and Volume Down buttons
 mapping:
   - name: Volume up to down
     source_event:
