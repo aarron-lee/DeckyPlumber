@@ -10,15 +10,7 @@ Decky Plugin for changing InputPlumber controller mode
 
 # Prerequisites
 
-Works only on devices with InputPlumber running
-
-If you are on the latest SteamOS, it ships with InputPlumber installed. However, it might not be enabled out of the box.
-
-To manually enable it, run:
-
-```bash
-sudo systemctl enable --now inputplumber.service
-```
+Works only on devices with InputPlumber running. Also requires python yaml installed.
 
 # Install
 
@@ -62,6 +54,7 @@ then reboot your machine.
 Dependencies:
 
 - Node.js v16.14+ and pnpm installed
+- python yaml
 
 ```bash
 git clone https://github.com/aarron-lee/DeckyPlumber.git
