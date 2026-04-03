@@ -17,6 +17,7 @@ export enum ServerAPIMethods {
   UPDATE_CUSTOM_PROFILE = "update_custom_profile",
   DELETE_CUSTOM_PROFILE = "delete_custom_profile",
   DUPLICATE_PROFILE = "duplicate_profile",
+  GET_SUPPORTED_TARGETS = "get_supported_targets",
 }
 
 export const onSuspend = (currentGameId: string) => {
@@ -114,3 +115,7 @@ export const duplicateProfile = (sourceId: string, newName: string) => {
     newName
   );
 };
+
+export const getSupportedTargets = callable<[], string[]>(
+  ServerAPIMethods.GET_SUPPORTED_TARGETS
+);
