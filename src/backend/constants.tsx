@@ -4,6 +4,7 @@
 // SteamDeck: deck
 // Xbox: xbox-series
 // Xbox Elite: xbox-elite
+// 8BitDo Ultimate 2: 8bitdo-u2
 
 export enum ControllerModes {
   DEFAULT = "default",
@@ -13,6 +14,7 @@ export enum ControllerModes {
   DUAL_SENSE_EDGE = "ds5-edge",
   HORI_STEAM = "hori-steam",
   STEAM_DECK = "deck-uhid",
+  BITDO_ULTIMATE_2 = "8bitdo-u2",
 }
 
 export enum AdvancedOptionsEnum {

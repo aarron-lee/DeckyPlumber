@@ -130,5 +130,8 @@ class Plugin:
         except Exception as e:
             decky_plugin.logger.error("{__name__} error during migrations {e}")
 
+    async def get_supported_targets(self):
+        return controller_utils.get_supported_target_ids()
+
     async def log_info(self, info):
         decky_plugin.logger.info(info)

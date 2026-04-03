@@ -11,6 +11,44 @@ import mapping_profiles
 STATE_FILE = "/tmp/.inputplumber.state"
 
 
+def get_supported_target_ids() -> list:
+    """Query InputPlumber Manager for supported target device IDs.
+
+    Returns a list of ID strings (e.g. ["xbox-series", "ds5", ...]),
+    or an empty list if the query fails (older InputPlumber without Manager API).
+    """
+    try:
+        result = subprocess.run(
+            [
+                "busctl", "get-property",
+                "org.shadowblip.InputPlumber",
+                "/org/shadowblip/InputPlumber/Manager",
+                "org.shadowblip.InputManager",
+                "SupportedTargetDeviceIds",
+            ],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=get_env(),
+        )
+        if result.returncode != 0:
+            decky_plugin.logger.warning(
+                f"SupportedTargetDeviceIds query failed: {result.stderr.strip()}"
+            )
+            return []
+        # Output format: as <count> "id1" "id2" ...
+        output = result.stdout.strip()
+        if not output.startswith("as "):
+            return []
+        parts = output.split()
+        return [p.strip('"') for p in parts[2:]]
+    except Exception:
+        decky_plugin.logger.warning(
+            "Failed to query SupportedTargetDeviceIds", exc_info=True
+        )
+        return []
+
+
 def clear_state_file():
     """Remove stale state so the next sync re-applies the mode.
 
