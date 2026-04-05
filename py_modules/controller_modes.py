@@ -18,7 +18,6 @@ MODE_OPTIONS = [
 
 
 def get_controller_mode_options():
-    print("hi")
     supported_target_ids = _get_supported_target_ids()
 
     if len(supported_target_ids) > 0:

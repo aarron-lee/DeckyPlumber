@@ -1,52 +1,15 @@
-import decky_plugin
-import device
-import time
 import os
 import subprocess
+import time
+
+import decky_plugin
+import device
 import file_timeout
-import plugin_settings as settings
-import plugin_enums
 import mapping_profiles
+import plugin_enums
+import plugin_settings as settings
 
 STATE_FILE = "/tmp/.inputplumber.state"
-
-
-def get_supported_target_ids() -> list:
-    """Query InputPlumber Manager for supported target device IDs.
-
-    Returns a list of ID strings (e.g. ["xbox-series", "ds5", ...]),
-    or an empty list if the query fails (older InputPlumber without Manager API).
-    """
-    try:
-        result = subprocess.run(
-            [
-                "busctl", "get-property",
-                "org.shadowblip.InputPlumber",
-                "/org/shadowblip/InputPlumber/Manager",
-                "org.shadowblip.InputManager",
-                "SupportedTargetDeviceIds",
-            ],
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            env=get_env(),
-        )
-        if result.returncode != 0:
-            decky_plugin.logger.warning(
-                f"SupportedTargetDeviceIds query failed: {result.stderr.strip()}"
-            )
-            return []
-        # Output format: as <count> "id1" "id2" ...
-        output = result.stdout.strip()
-        if not output.startswith("as "):
-            return []
-        parts = output.split()
-        return [p.strip('"') for p in parts[2:]]
-    except Exception:
-        decky_plugin.logger.warning(
-            "Failed to query SupportedTargetDeviceIds", exc_info=True
-        )
-        return []
 
 
 def clear_state_file():
@@ -67,13 +30,9 @@ def get_env():
 
 
 def sync_controller_settings(current_game_id):
-    decky_plugin.logger.debug(
-        f"[sync] called for game_id={current_game_id!r}"
-    )
+    decky_plugin.logger.debug(f"[sync] called for game_id={current_game_id!r}")
     controller_profile = settings.get_controller_profile_for_game_id(current_game_id)
-    decky_plugin.logger.debug(
-        f"[sync] controller_profile={controller_profile}"
-    )
+    decky_plugin.logger.debug(f"[sync] controller_profile={controller_profile}")
 
     mode = controller_profile.get("mode")
 
@@ -123,13 +82,18 @@ def _wait_for_inputplumber_dbus(timeout=5, interval=0.5):
     while elapsed < timeout:
         try:
             result = subprocess.run(
-                ["busctl", "get-property",
-                 "org.shadowblip.InputPlumber",
-                 "/org/shadowblip/InputPlumber/CompositeDevice0",
-                 "org.shadowblip.Input.CompositeDevice",
-                 "ProfileName"],
-                check=True, text=True,
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                [
+                    "busctl",
+                    "get-property",
+                    "org.shadowblip.InputPlumber",
+                    "/org/shadowblip/InputPlumber/CompositeDevice0",
+                    "org.shadowblip.Input.CompositeDevice",
+                    "ProfileName",
+                ],
+                check=True,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 env=get_env(),
             )
             if result.returncode == 0:
@@ -141,9 +105,7 @@ def _wait_for_inputplumber_dbus(timeout=5, interval=0.5):
             pass
         time.sleep(interval)
         elapsed += interval
-    decky_plugin.logger.warning(
-        f"InputPlumber DBus not ready after {timeout}s"
-    )
+    decky_plugin.logger.warning(f"InputPlumber DBus not ready after {timeout}s")
     return False
 
 

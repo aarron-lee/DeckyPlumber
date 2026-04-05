@@ -10,7 +10,6 @@ import migrations
 import plugin_settings
 import plugin_update
 from controller_modes import get_controller_mode_options
-from plugin_enums import ControllerModes
 
 
 class Plugin:
