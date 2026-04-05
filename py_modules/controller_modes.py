@@ -4,8 +4,9 @@ import subprocess
 import decky_plugin
 from plugin_enums import ControllerModes
 
+_DEFAULT_OPTION = {"data": ControllerModes.DEFAULT.value, "label": "Default"}
+
 MODE_OPTIONS = [
-    {"data": ControllerModes.DEFAULT.value, "label": "Default"},
     {"data": ControllerModes.XBOX.value, "label": "Xbox Series"},
     {"data": ControllerModes.XBOX_ELITE.value, "label": "Xbox Elite"},
     {"data": ControllerModes.DUAL_SENSE.value, "label": "DualSense"},
@@ -22,9 +23,11 @@ def get_controller_mode_options():
 
     if len(supported_target_ids) > 0:
         # filter MODE_OPTIONS
-        return [
+        options = [
             item for item in MODE_OPTIONS if item.get("data") in supported_target_ids
         ]
+
+        return [_DEFAULT_OPTION] + options
 
     return MODE_OPTIONS
 
