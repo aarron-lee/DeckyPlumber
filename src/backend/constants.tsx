@@ -1,10 +1,7 @@
-// VALUE can be:
-// DualSense: ds5
-// DualSense Edge: ds5-edge
-// SteamDeck: deck
-// Xbox: xbox-series
-// Xbox Elite: xbox-elite
-// 8BitDo Ultimate 2: 8bitdo-u2
+export type ControllerModeOption = {
+  data: ControllerModes;
+  label: string;
+};
 
 export enum ControllerModes {
   DEFAULT = "default",

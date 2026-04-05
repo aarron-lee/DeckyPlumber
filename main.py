@@ -1,14 +1,17 @@
 import os
-import decky_plugin
-import controller_utils
-import device
+
 import advanced_options
+import controller_utils
+import decky_plugin
+import device
 import file_timeout
-import plugin_update
-import plugin_settings
 import mapping_profiles
 import migrations
+import plugin_settings
+import plugin_update
+from controller_modes import get_controller_mode_options
 from plugin_enums import ControllerModes
+
 
 class Plugin:
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
@@ -24,18 +27,19 @@ class Plugin:
         results = plugin_settings.get_settings()
 
         try:
-            results['pluginVersionNum'] = f'{decky_plugin.DECKY_PLUGIN_VERSION}'
-            results['advancedOptions'] = advanced_options.get_options()
-            results['mappingProfiles'] = mapping_profiles.get_all_profiles()
-            results['deviceName'] = device.get_device_name()
-            results['currentProfileInfo'] = mapping_profiles.get_base_profile_info()
+            results["controllerModeOptions"] = get_controller_mode_options()
+            results["pluginVersionNum"] = f"{decky_plugin.DECKY_PLUGIN_VERSION}"
+            results["advancedOptions"] = advanced_options.get_options()
+            results["mappingProfiles"] = mapping_profiles.get_all_profiles()
+            results["deviceName"] = device.get_device_name()
+            results["currentProfileInfo"] = mapping_profiles.get_base_profile_info()
         except Exception as e:
             decky_plugin.logger.error(e)
 
         return results
 
     async def save_per_game_profiles_enabled(self, enabled: bool):
-        return plugin_settings.set_setting('perGameProfilesEnabled', enabled)
+        return plugin_settings.set_setting("perGameProfilesEnabled", enabled)
 
     async def set_setting(self, name: str, value):
         try:
@@ -46,10 +50,9 @@ class Plugin:
         except Exception as e:
             decky_plugin.logger.error(f"error failed to set_setting {name}={value} {e}")
 
-
     async def save_controller_settings(self, payload):
-        currentGameId = payload.get('currentGameId')
-        controllerProfiles = payload.get('controllerProfiles')
+        currentGameId = payload.get("currentGameId")
+        controllerProfiles = payload.get("controllerProfiles")
         result = plugin_settings.set_all_controller_profiles(controllerProfiles)
 
         if currentGameId:
@@ -129,9 +132,6 @@ class Plugin:
             migrations.migrate_deck_target()
         except Exception as e:
             decky_plugin.logger.error("{__name__} error during migrations {e}")
-
-    async def get_supported_targets(self):
-        return controller_utils.get_supported_target_ids()
 
     async def log_info(self, info):
         decky_plugin.logger.info(info)

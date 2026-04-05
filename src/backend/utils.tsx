@@ -17,20 +17,19 @@ export enum ServerAPIMethods {
   UPDATE_CUSTOM_PROFILE = "update_custom_profile",
   DELETE_CUSTOM_PROFILE = "delete_custom_profile",
   DUPLICATE_PROFILE = "duplicate_profile",
-  GET_SUPPORTED_TARGETS = "get_supported_targets",
 }
 
 export const onSuspend = (currentGameId: string) => {
   return call<[currentGameId: string], void>(
     ServerAPIMethods.ON_SUSPEND,
-    currentGameId
+    currentGameId,
   );
 };
 
 export const onResume = (currentGameId: string) => {
   return call<[currentGameId: string], void>(
     ServerAPIMethods.ON_RESUME,
-    currentGameId
+    currentGameId,
   );
 };
 
@@ -43,21 +42,21 @@ export const getSettings = callable<[], any>(ServerAPIMethods.GET_SETTINGS);
 export const syncControllerSettings = (currentGameId: string) => {
   return call<[currentGameId: string], void>(
     ServerAPIMethods.SYNC_CONTROLLER_SETTINGS,
-    currentGameId
+    currentGameId,
   );
 };
 
 export const saveControllerSettings = (payload: any) => {
   return call<[payload: any], void>(
     ServerAPIMethods.SAVE_CONTROLLER_SETTINGS,
-    payload
+    payload,
   );
 };
 
 export const savePerGameProfilesEnabled = (enabled: boolean) => {
   return call<[enabled: boolean], void>(
     ServerAPIMethods.SAVE_PER_GAME_PROFILES_ENABLED,
-    enabled
+    enabled,
   );
 };
 
@@ -68,7 +67,7 @@ export const extractCurrentGameId = () =>
   `${Router.MainRunningApp?.appid || "default"}`;
 
 export const getLatestVersionNum = callable<[], any>(
-  ServerAPIMethods.GET_LATEST_VERSION_NUM
+  ServerAPIMethods.GET_LATEST_VERSION_NUM,
 );
 
 export const setSetting = ({ name, value }: { name: string; value: any }) => {
@@ -82,29 +81,26 @@ export const otaUpdate = callable<[], any>(ServerAPIMethods.OTA_UPDATE);
 export const getProfileDetail = (profileId: string) => {
   return call<[profileId: string], any>(
     ServerAPIMethods.GET_PROFILE_DETAIL,
-    profileId
+    profileId,
   );
 };
 
 export const createCustomProfile = (data: any) => {
-  return call<[data: any], any>(
-    ServerAPIMethods.CREATE_CUSTOM_PROFILE,
-    data
-  );
+  return call<[data: any], any>(ServerAPIMethods.CREATE_CUSTOM_PROFILE, data);
 };
 
 export const updateCustomProfile = (profileId: string, data: any) => {
   return call<[profileId: string, data: any], any>(
     ServerAPIMethods.UPDATE_CUSTOM_PROFILE,
     profileId,
-    data
+    data,
   );
 };
 
 export const deleteCustomProfile = (profileId: string) => {
   return call<[profileId: string], any>(
     ServerAPIMethods.DELETE_CUSTOM_PROFILE,
-    profileId
+    profileId,
   );
 };
 
@@ -112,10 +108,6 @@ export const duplicateProfile = (sourceId: string, newName: string) => {
   return call<[sourceId: string, newName: string], any>(
     ServerAPIMethods.DUPLICATE_PROFILE,
     sourceId,
-    newName
+    newName,
   );
 };
-
-export const getSupportedTargets = callable<[], string[]>(
-  ServerAPIMethods.GET_SUPPORTED_TARGETS
-);

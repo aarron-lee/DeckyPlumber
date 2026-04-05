@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { setCurrentGameId, setInitialState } from "./extraActions";
 import { RootState } from "./store";
 import { extractDisplayName, logInfo } from "../backend/utils";
+import { ControllerModeOption } from "../backend/constants";
 // import type { RootState } from './store';
 
 type UiStateType = {
@@ -10,6 +11,7 @@ type UiStateType = {
   currentGameId: undefined | string;
   currentDisplayName: undefined | string;
   pluginVersionNum?: string;
+  controllerModeOptions?: ControllerModeOption[];
   deviceName?: string;
 };
 
@@ -19,6 +21,7 @@ const initialState: UiStateType = {
   currentGameId: undefined,
   currentDisplayName: undefined,
   pluginVersionNum: "",
+  controllerModeOptions: [],
   deviceName: "",
 };
 
@@ -37,6 +40,9 @@ export const uiSlice = createSlice({
       if (action.payload?.pluginVersionNum) {
         state.pluginVersionNum = `${action.payload.pluginVersionNum}`;
       }
+      if (action.payload?.controllerModeOptions) {
+        state.controllerModeOptions = action.payload.controllerModeOptions;
+      }
       if (action.payload?.deviceName) {
         state.deviceName = action.payload.deviceName;
       }
@@ -52,6 +58,9 @@ export const uiSlice = createSlice({
 
 export const getPluginVersionNumSelector = (state: RootState) =>
   state.ui.pluginVersionNum;
+
+export const getControllerModeOptions = (state: RootState) =>
+  state.ui.controllerModeOptions;
 
 export const getDeviceNameSelector = (state: RootState) => state.ui.deviceName;
 
