@@ -59,7 +59,7 @@ export const uiSlice = createSlice({
 export const getPluginVersionNumSelector = (state: RootState) =>
   state.ui.pluginVersionNum;
 
-export const getControllerModeOptions = (state: RootState) =>
+export const getControllerModeOptionsSelector = (state: RootState) =>
   state.ui.controllerModeOptions;
 
 export const getDeviceNameSelector = (state: RootState) => state.ui.deviceName;

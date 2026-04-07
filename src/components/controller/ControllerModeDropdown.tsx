@@ -4,13 +4,13 @@ import { DropdownItem } from "@decky/ui";
 import { useControllerMode } from "../../hooks/controller";
 import { L } from "../../i18n";
 import { t } from "i18next";
-import { getControllerModeOptions } from "../../redux-modules/uiSlice";
+import { getControllerModeOptionsSelector } from "../../redux-modules/uiSlice";
 import { ControllerModeOption } from "../../backend/constants";
 
 const ControllerModeDropdown: FC = () => {
   const [mode, setMode] = useControllerMode();
 
-  const options = useSelector(getControllerModeOptions);
+  const options = useSelector(getControllerModeOptionsSelector);
 
   return (
     <DropdownItem
