@@ -28,7 +28,7 @@ def get_controller_mode_options():
 
         return [_DEFAULT_OPTION] + options
 
-    return MODE_OPTIONS
+    return [_DEFAULT_OPTION] + MODE_OPTIONS
 
 
 def _get_supported_target_ids() -> list:
