@@ -132,7 +132,7 @@ def execute_mode_change(mode):
             inputplumber_args = f'3 "{mode}" keyboard mouse'
 
             if device.is_legion_go():
-                inputplumber_args = f'3 "{mode}" keyboard touchpad'
+                inputplumber_args = f'3 "{mode}" keyboard mouse'
             if device.is_ayaneo_flip():
                 inputplumber_args = f'4 "{mode}" keyboard mouse touchscreen'
 
