@@ -16,7 +16,9 @@ Works only on devices with InputPlumber running. Also requires python yaml insta
 
 ### Prerequisites
 
-Decky Loader must already be installed. Python yaml is also required, most gaming distros should already have it pre-installed.
+Decky Loader must already be installed. Python yaml is also required, most gaming distros should already have it pre-installed. 
+
+**NOTE for CachyOS users**: you will need to install python yaml, it is NOT preinstalled by default.
 
 ### Quick Install / Update
 
