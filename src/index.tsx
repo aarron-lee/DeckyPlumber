@@ -77,13 +77,21 @@ const DeckyPlumberRouter: FC = () => {
 export default definePlugin(() => {
   localizationManager.init();
 
+  let disposed = false;
+  let clearListener: () => void = () => {};
+
   getSettings().then((result) => {
+    if (disposed) {
+      return;
+    }
+
     const results = result || {};
 
     store.dispatch(setInitialState(results));
-  });
 
-  const clearListener = currentGameIdListener();
+    // Start polling only after saved profiles are hydrated, so the first sync cannot save defaults.
+    clearListener = currentGameIdListener();
+  });
 
   const unsubscribeSuspendListeners = suspendResumeListeners();
 
@@ -94,6 +102,7 @@ export default definePlugin(() => {
     content: <AppContainer />,
     icon: <IoGameController />,
     onDismount() {
+      disposed = true;
       clearListener();
       unsubscribeSuspendListeners();
       routerHook.removeRoute(DECKY_PLUMBER_ROUTE);
